@@ -1,0 +1,14 @@
+*.orig
+msvc/
+msvc.bat
+include/sts/signals/Info.h
+include/sts/signals/Export.h
+output/
+output-dev/
+test_package/build/
+reports/
+build/
+doc/generated/
+vcs_data
+test.bat
+doc.bat
