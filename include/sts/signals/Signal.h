@@ -85,7 +85,7 @@ namespace signals {
      *       \li In this library some "dirty hacks" are used to make slots calling as fast as possible.   
      *           Author of those hacks don't exactly know when those hacks can lead to problems, in theory never but it isn't guaranteed. 
      *           For some controversial situations the tests are written.\n
-     *           If you define STS_SIGNALS_SAFE_DELEGATE in your project than those hacks will not be used. 
+     *           If you define STS_SIGNALS_SAFE_DELEGATE in your project then those hacks will not be used. 
      *           Read the information below about the differences.
      *       \li This implementation isn't thread safe.
      *       \li This implementation doesn't work with return value. Author thinks it isn't necessary,
@@ -94,21 +94,21 @@ namespace signals {
      *       \li This implementation doesn't support std::function and lambdas.
      *  \pre
      *       With the define STS_SIGNALS_SAFE_DELEGATE you can switch the signal to use safe variant of delegate.\n
-     *       \li Safe delegate uses polymorphism for storing slots data, so each connection and copy allocates resources in the heap.\n
-     *           It also uses virtual methods to call slot unlike to the unsafe version of the delegate.
+     *       \li Safe delegate uses polymorphism for storing slots data, so each connection and copy allocates resources on heap.\n
+     *           It also uses virtual method to call slot unlike to the unsafe version of the delegate.
      *       \li Unsafe version of delegate has hacks with types that allow you to store slots without allocating resources on heap.\n
      *           It is also able to call slots almost directly and the call can even be inlined.\n
      * \code
      *       // Simple, not very accurate benchmarks. (01.06.2018)
      *       // This tests show you differences between safe and unsafe delegates,
-     *       // so it doesn't matter what PC was used for this tests.
+     *       // so it doesn't matter what PC was used for them.
      *       |---------------------------|-------------|-------------|
      *       | Release benchmark VS 2017 |    SAFE     |   UNSAFE    |
      *       |--------------------------:|:-----------:|:-----------:|
-     *       | Receivers                 |   50000  ms |   50000  ms |
-     *       | Connecting                |   14031  ms |    1021  ms |
-     *       | Call                      |  0.3522  ms |  0.2885  ms |
-     *       | Disconnecting             |    1430  ms |    1120  ms |
+     *       | Receivers                 |   50000     |   50000     |
+     *       | Connecting                |   14031 ms  |    1021 ms  |
+     *       | Call                      |  0.3522 ms  |  0.2885 ms  |
+     *       | Disconnecting             |    1430 ms  |    1120 ms  |
      *       |---------------------------|-------------|-------------|
      *       | Memory                    |   ~10.1 MB  |    ~7.1 MB  |
      *       |---------------------------|-------------|-------------|
@@ -116,10 +116,10 @@ namespace signals {
      *       |---------------------------|-------------|-------------|
      *       | Debug benchmark VS 2017   |    SAFE     |   UNSAFE    |
      *       |--------------------------:|:-----------:|:-----------:|
-     *       | Receivers                 |   10000  ms |   10000  ms |
-     *       | Connecting                |   11914  ms |    4298  ms |
-     *       | Call                      |  0.6627  ms |  0.1163  ms |
-     *       | Disconnecting             |    3619  ms |      75  ms |
+     *       | Receivers                 |   10000     |   10000     |
+     *       | Connecting                |   11914 ms  |    4298 ms  |
+     *       | Call                      |  0.6627 ms  |  0.1163 ms  |
+     *       | Disconnecting             |    3619 ms  |      75 ms  |
      *       |---------------------------|-------------|-------------|
      *       | Memory                    |    ~5.9 MB  |    ~4.1 MB  |
      *       |---------------------------|-------------|-------------|
@@ -128,7 +128,7 @@ namespace signals {
      * \tparam Args signal arguments 
      * \code 
      * sts::Signal<> // no arguments
-     * sts::Signal<bool, int, float> // etc... 
+     * sts::Signal<bool, int &, const float> // with arguments
      * \endcode
      */
     template<typename ... Args>
@@ -159,7 +159,7 @@ namespace signals {
          * \code
          *     sender.signal.connect(&function);
          * \endcode
-         * \param [in] function the pointer to a static function.
+         * \param [in] function pointer to static function.
          * \exception std::runtime_error if this method is called during the signal invocation.
          */
         void connect(void (*function)(Args ...)) {
@@ -177,7 +177,7 @@ namespace signals {
          * \code
          *     sender.signal.disconnect(&function);
          * \endcode
-         * \param [in] function the pointer to the static function which must be disconnected.
+         * \param [in] function pointer to static function which must be disconnected.
          * \exception std::runtime_error if this method is called during the signal invocation.
          */
         void disconnect(void (*function)(Args ...)) {
@@ -192,12 +192,12 @@ namespace signals {
         // @{
 
         /*!
-         * \details Connects an object's method.
+         * \details Connects object method.
          * \code
          *     sender.signal.connect(&receiver, &AppReceiver::method);
          * \endcode
-         * \param [in] obj the pointer to an object.
-         * \param [in] method the pointer to the object's method.
+         * \param [in] obj pointer to object.
+         * \param [in] method pointer to object method.
          * \exception std::runtime_error if this method is called during the signal invocation.
          */
         template<class ObjType>
@@ -212,13 +212,13 @@ namespace signals {
         }
 
         /*!
-         * \details Connects an object's method.
+         * \details Connects object method.
          *          The object is derived from \link AutoDisconnect \endlink.
          * \code
          *     sender.signal.connect(&receiver, &AppReceiver::method);
          * \endcode
-         * \param [in] obj the pointer to an object.
-         * \param [in] method the pointer to the object's method.
+         * \param [in] obj pointer to object.
+         * \param [in] method pointer to object method.
          * \exception std::runtime_error if this method is called during the signal invocation.
          */
         template<class ObjType>
@@ -227,7 +227,7 @@ namespace signals {
         }
 
         /*!
-         * \details Connects an object's method with manually specified \link AutoDisconnect \endlink
+         * \details Connects object method with manually specified \link AutoDisconnect \endlink
          * \details Use it when you get some thing like this: 
          *          'static_cast': ambiguous conversions from 'Receiver3 *' to 'AutoDisconnect *'\n
          *          For example it can happen with multiple inheritance.
@@ -243,9 +243,9 @@ namespace signals {
          * sig1.connect(&r3, static_cast<Receiver2 *>(&r3), &Receiver3::slotR3);
          * \endcode
          * 
-         * \param [in] obj the pointer to an object.
-         * \param [in] disconnectObj the pointer to \link AutoDisconnect \endlink object.
-         * \param [in] method the pointer to the object's method.
+         * \param [in] obj pointer to object.
+         * \param [in] disconnectObj pointer to derived from \link AutoDisconnect \endlink object.
+         * \param [in] method pointer to object method.
          * \exception std::runtime_error if this method is called during the signal invocation.
          */
         template<class ObjType>
@@ -263,12 +263,12 @@ namespace signals {
         }
 
         /*!
-         * \details Disconnects the object's method.
+         * \details Disconnects object method.
          * \code
          *     sender.signal.disconnect(&receiver, &AppReceiver::method);
          * \endcode
-         * \param [in] obj the pointer to the object.
-         * \param [in] method the pointer to the object's method which must be disconnected.
+         * \param [in] obj pointer to object.
+         * \param [in] method pointer to object method which should be disconnected.
          * \exception std::runtime_error if this method is called during the signal invocation.
          */
         template<class ObjType>
@@ -280,11 +280,11 @@ namespace signals {
         }
 
         /*!
-         * \details Disconnects all methods of the specified object.
+         * \details Disconnects all methods of specified object.
          * \code
          *     sender.signal.disconnect(&receiver);
          * \endcode
-         * \param [in] obj the pointer to the object whose methods must be disconnected.
+         * \param [in] obj pointer to object whose methods should be disconnected.
          * \exception std::runtime_error if this method is called during the signal invocation.
          */
         template<class ObjType>

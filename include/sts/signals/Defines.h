@@ -39,9 +39,6 @@
  *          The \link sts::signals::SafeDelegate \endlink doesn't use 
  *          "dirty hack" unlike to the \link sts::signals::UnsafeDelegate \endlink
  *          but it is less optimal with the resources.\n
- *          \li It uses heap for each connection and for each copy.
- *          \li It calls slots with virtual methods but unsafe version 
- *              calls them almost directly and can even be inlined.
  */
 
 /**************************************************************************************************/
