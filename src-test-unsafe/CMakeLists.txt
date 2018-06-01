@@ -37,7 +37,7 @@
 
 cmake_minimum_required (VERSION 3.7.0)
 
-set(PROJECT test-${ProjectId})
+set(PROJECT test-${ProjectId}-unsafe)
 project(${PROJECT} VERSION ${ProjectVersion} LANGUAGES "CXX")
 
 #----------------------------------------------------------------------------------#

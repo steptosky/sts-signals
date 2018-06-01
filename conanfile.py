@@ -52,7 +52,8 @@ class LibConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     default_options = 'gtest:shared=False', 'gtest:build_gmock=True'
     exports = 'vcs_data', 'conanfile_vcs.py'
-    exports_sources = 'CMakeLists.txt', 'src/*', 'src-test/*', 'include/*', 'cmake/*', 'license*'
+    exports_sources = 'CMakeLists.txt', 'src/*', 'src-test-unsafe/*', \
+                      'src-test-safe/*', 'include/*', 'cmake/*', 'license*'
     no_copy_source = True
     generators = 'cmake'
 

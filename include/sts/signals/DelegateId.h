@@ -34,11 +34,11 @@
 namespace sts {
 namespace signals {
 
+    /// @cond private
+
     /********************************************************************************************************/
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     /********************************************************************************************************/
-
-    /// @cond private
 
     /*!
      * \details Represents delegate Id.
@@ -49,6 +49,36 @@ namespace signals {
 
         typedef uintptr_t Id;
 
+        //-------------------------------------------------------------------------
+
+        /*!
+         * \details Allows you converting a pointer to \link DelegateId::Id \endlink.
+         *          So we can use pointer value as impersonal id.
+         * \tparam T type pointer
+         * \param [in] v
+         * \return id
+         */
+        template<typename T>
+        static Id ptrToId(const T & v) {
+            union Convert {
+                explicit Convert(const T & v)
+                    : mVal(v) {}
+
+                const T mVal;
+                const Id mId;
+            private:
+                // fix warning for the VS 2013, just "=delete" doesn't work properly.
+                Convert(const Convert &)
+                    : mVal(nullptr) {}
+
+                // fix warning for the VS 2013, just "=delete" doesn't work properly.
+                Convert & operator=(const Convert &) { return *this; }
+            };
+            return Convert(v).mId;
+        }
+
+        //-------------------------------------------------------------------------
+
         explicit DelegateId(const Id a = 0, const Id b = 0)
             : mA(a),
               mB(b) {}
@@ -57,22 +87,25 @@ namespace signals {
         ~DelegateId() = default;
         DelegateId & operator=(const DelegateId &) = default;
 
-#if _MSC_VER > 1800 // (2013)
-        DelegateId(DelegateId &&) = default;
-        DelegateId & operator=(DelegateId &&) = default;
-#endif
+        //-------------------------------------------------------------------------
 
         bool operator==(const DelegateId & id) const { return mA == id.mA && mB == id.mB; }
         bool isValid() const { return mA != 0 || mB != 0; }
 
+        //-------------------------------------------------------------------------
+
         Id mA;
         Id mB;
-    };
 
-    /// @endcond
+        //-------------------------------------------------------------------------
+
+    };
 
     /********************************************************************************************************/
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     /********************************************************************************************************/
+
+    /// @endcond
+
 }
 }

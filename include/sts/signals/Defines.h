@@ -1,3 +1,5 @@
+#pragma once
+
 /*
 **  Copyright(C) 2018, StepToSky
 **
@@ -27,82 +29,30 @@
 **  Contacts: www.steptosky.com
 */
 
-#include "gtest/gtest.h"
-#include "sts/signals/Signal.h"
+/**************************************************************************************************/
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/**************************************************************************************************/
+
+/*! 
+ * \def STS_SIGNALS_SAFE_DELEGATE
+ * \details Enables using \link sts::signals::SafeDelegate \endlink for the Signal.
+ *          The \link sts::signals::SafeDelegate \endlink doesn't use 
+ *          "dirty hack" unlike to the \link sts::signals::UnsafeDelegate \endlink
+ *          but it is less optimal with the resources.\n
+ *          \li It uses heap for each connection and for each copy.
+ *          \li It calls slots with virtual methods but unsafe version 
+ *              calls them almost directly and can even be inlined.
+ */
 
 /**************************************************************************************************/
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /**************************************************************************************************/
 
-// Test hierarchy: calling
-
-/**************************************************************************************************/
-////////////////////////////////////////////////////////////////////////////////////////////////////
-/**************************************************************************************************/
-
-typedef sts::signals::Signal<const size_t> Signal;
-
-/**************************************************************************************************/
-////////////////////////////////////////////////////////////////////////////////////////////////////
-/**************************************************************************************************/
-
-class AbstractReceiver {
-public:
-
-    AbstractReceiver() = default;
-    AbstractReceiver(const AbstractReceiver &) = default;
-    virtual ~AbstractReceiver() = default;
-    AbstractReceiver & operator=(const AbstractReceiver &) = default;
-
-#if _MSC_VER > 1800 // (2013)
-    AbstractReceiver(AbstractReceiver &&) = default;
-    AbstractReceiver & operator=(AbstractReceiver &&) = default;
+#if _MSC_VER > 1800 // VS 2013
+#   define NOEXCEPT noexcept
+#else
+#   define NOEXCEPT
 #endif
-
-    virtual void slot(const size_t val) { mAbstract = val; }
-    size_t mAbstract = 0;
-
-};
-
-class DerivedReceiver : public AbstractReceiver {
-public:
-
-    DerivedReceiver() = default;
-    DerivedReceiver(const DerivedReceiver &) = default;
-    virtual ~DerivedReceiver() = default;
-    DerivedReceiver & operator=(const DerivedReceiver &) = default;
-
-#if _MSC_VER > 1800 // (2013)
-    DerivedReceiver(DerivedReceiver &&) = default;
-    DerivedReceiver & operator=(DerivedReceiver &&) = default;
-#endif
-
-    void slot(const size_t val) override { mDerived = val; }
-    size_t mDerived = 0;
-
-};
-
-/**************************************************************************************************/
-////////////////////////////////////////////////////////////////////////////////////////////////////
-/**************************************************************************************************/
-
-TEST(Signal3, virtual_slot_case1) {
-    Signal signal;
-    DerivedReceiver r;
-    signal.connect(&r, &DerivedReceiver::slot);
-    signal(5);
-    ASSERT_EQ(0, r.mAbstract);
-    ASSERT_EQ(5, r.mDerived);
-}
-
-TEST(Signal3, virtual_slot_case2) {
-    Signal signal;
-    DerivedReceiver r;
-    signal.connect(static_cast<AbstractReceiver*>(&r), &AbstractReceiver::slot);
-    signal(5);
-    ASSERT_EQ(0, r.mAbstract);
-    ASSERT_EQ(5, r.mDerived);
-}
 
 /**************************************************************************************************/
 ////////////////////////////////////////////////////////////////////////////////////////////////////

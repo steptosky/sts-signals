@@ -41,7 +41,7 @@ namespace signals {
 
     /*!
      * \details Inherit from this class when you want to auto-disconnect
-     *          the slots while your class is deleting.
+     *          the slots while your class is being deleted.
      * \note I recommend you to use this class only if you really need it.
      */
     class AutoDisconnect {
@@ -62,6 +62,9 @@ namespace signals {
             }
         }
 
+        /*!
+         * \return Number of connected signals.
+         */
         size_t numSignalsConnected() const { return mSignalDelegates.size(); }
 
     private:

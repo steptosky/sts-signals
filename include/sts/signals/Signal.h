@@ -44,9 +44,7 @@ namespace signals {
     /**************************************************************************************************/
 
     /*!
-     * \details Implementation of fast and simple signal/slot mechanism.
-     * \note This implementation <b><em>isn't thread safe</em></b> and doesn't work with return value.
-     * \note This signal doesn't support std::function and lambdas.
+     * \details Implementation of fast and simple signals-slots pattern.
      * \details Example:
      * \code
      *
@@ -83,10 +81,24 @@ namespace signals {
      *
      * \endcode
      *
-     * \note If you want to use auto-disconnect mechanism then
-     *       you have to inherit your class with slots from the
-     *       \link AutoDisconnect \endlink
-     *
+     * \note
+     *       \li In this library some "dirty hacks" are used to make slots calling as fast as possible.   
+     *           Author of those hacks don't exactly know when those hacks can lead to problems, in theory never but it isn't guaranteed. 
+     *           For some controversial situations the tests are written.\n
+     *           If you define STS_SIGNALS_SAFE_DELEGATE in your project than those hacks will not be used. 
+     *           Read the information below about the differences.
+     *       \li This implementation isn't thread safe.
+     *       \li This implementation doesn't work with return value. Author thinks it isn't necessary,
+     *           you can use reference parameter in signal to make needed behavior.
+     *       \li This implementation has auto-disconnect implementation for objects with slots, see \link AutoDisconnect \endlink class.
+     *       \li This implementation doesn't support std::function and lambdas.
+     *  \pre
+     *       With the define STS_SIGNALS_SAFE_DELEGATE you can switch the signal to use safe variant of delegate.\n
+     *       \li Safe delegate uses polymorphism for storing slots data, so each connection and copy allocates resources in the heap.\n
+     *           It also uses virtual methods to call slot unlike to the unsafe version of the delegate.
+     *       \li Unsafe version of delegate has hacks with types that allow you to store slots without allocating resources on heap.
+     *           It is also able to call slots almost directly and the call can even be inlined.\n
+     *           
      * \tparam Args signal arguments 
      * \code 
      * sts::Signal<> // no arguments
@@ -130,7 +142,7 @@ namespace signals {
             }
             auto d = DelegateType::make(function);
             if (!std::any_of(mDelegateList.begin(), mDelegateList.end(), [&](const DelegateType & v) { return d == v; })) {
-                mDelegateList.emplace_back(d);
+                mDelegateList.emplace_back(std::move(d));
             }
         }
 
@@ -169,7 +181,7 @@ namespace signals {
             }
             auto d = DelegateType::make(obj, method);
             if (!std::any_of(mDelegateList.begin(), mDelegateList.end(), [&](const DelegateType & v) { return d == v; })) {
-                mDelegateList.emplace_back(d);
+                mDelegateList.emplace_back(std::move(d));
             }
         }
 
@@ -218,9 +230,9 @@ namespace signals {
             auto d = DelegateType::make(obj, method);
             if (!std::any_of(mDelegateList.begin(), mDelegateList.end(), [&](const DelegateType & v) { return d == v; })) {
                 d.setAutoDisconnectObj(disconnectObj);
-                auto c = autoDisconnectDelegate(d);
-                c.addToAutoDisconnecter(disconnectObj);
-                mDelegateList.emplace_back(d);
+                auto connection = autoDisconnectDelegate(d);
+                Connection::addToAutoDisconnecter(std::move(connection), disconnectObj);
+                mDelegateList.emplace_back(std::move(d));
             }
         }
 
@@ -327,8 +339,8 @@ namespace signals {
         void removeFromAutoDisconnecter(DelegateType & d) {
             auto * disconnectObg = d.autoDisconnectObj();
             if (disconnectObg) {
-                auto conn = autoDisconnectDelegate(d);
-                conn.removeFromAutoDisconnecter(disconnectObg);
+                auto connection = autoDisconnectDelegate(d);
+                Connection::removeFromAutoDisconnecter(connection, disconnectObg);
             }
         }
 
@@ -346,7 +358,7 @@ namespace signals {
         void removeReceiver(T obj) {
             assert(obj);
             for (auto it = mDelegateList.begin(); it != mDelegateList.end();) {
-                if (it->id().mA == DelegateType::template ptrToId<T>(obj)) {
+                if (it->id().mA == DelegateId::ptrToId<T>(obj)) {
                     removeFromAutoDisconnecter(*it);
                     it = mDelegateList.erase(it);
                     if (it == mDelegateList.end()) {

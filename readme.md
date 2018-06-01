@@ -1,8 +1,8 @@
 # Cross-platform headers only C++ Library for working with the signals-slots pattern.
 
 
-| CI        | master | develop | other |
-| --------- |:------:|:-------:|:------:|
+| CI        | master | develop | last commit |
+| --------- |:------:|:-------:|:-----------:|
 | appveyor  |[![Build status](https://ci.appveyor.com/api/projects/status/ttnd36rho34b3qqt/branch/master?svg=true)](https://ci.appveyor.com/project/steptosky/sts-signals/branch/master)|[![Build status](https://ci.appveyor.com/api/projects/status/ttnd36rho34b3qqt/branch/develop?svg=true)](https://ci.appveyor.com/project/steptosky/sts-signals/branch/develop)|[![Build status](https://ci.appveyor.com/api/projects/status/ttnd36rho34b3qqt?svg=true)](https://ci.appveyor.com/project/steptosky/sts-signals)|
 | travis    |[![Build Status](https://travis-ci.org/steptosky/sts-signals.svg?branch=master)](https://travis-ci.org/steptosky/sts-signals)|[![Build Status](https://travis-ci.org/steptosky/sts-signals.svg?branch=develop)](https://travis-ci.org/steptosky/sts-signals)|[![Build Status](https://travis-ci.org/steptosky/sts-signals.svg)](https://travis-ci.org/steptosky/sts-signals)|
 
@@ -19,10 +19,11 @@ license for more information read the [license](license.txt) file.
   ```sts-signals/X.Y.Z@steptosky/stable```   
 
 #### notes
-- In this library some _"dirty hacks"_ are used to make slots calling as fast as possible.   
+- In this library some _dirty hacks_ are used to make slots calling as fast as possible.   
   Author of those hacks don't exactly know when those hacks can lead to problems, in theory never but it isn't guaranteed. 
   For some controversial situations the tests are written.  
-  Perhaps, in future, a safe variant will be created with the same signal interface that can be enabled with a define.
+  If you define _STS_SIGNALS_SAFE_DELEGATE_ in your project than those hacks will not be used. 
+  You can find more information about this definition in the _Signal_ class description in source file.
 - This implementation isn't thread safe.
 - This implementation doesn't work with return value. Author thinks it isn't necessary,
   you can use reference parameter in signal to make needed behavior.

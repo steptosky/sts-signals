@@ -46,13 +46,9 @@ public:
 
     AppReceiver() { resetValues(); }
     AppReceiver(const AppReceiver &) = default;
-    virtual ~AppReceiver() = default;
     AppReceiver & operator=(const AppReceiver &) = default;
 
-#if _MSC_VER > 1800 // (2013)
-    AppReceiver(AppReceiver &&) = default;
-    AppReceiver & operator=(AppReceiver &&) = default;
-#endif
+    virtual ~AppReceiver() = default;
 
     void testMethodDelegate(const std::string & inStr, const int inInt1, const int inInt2) {
         m1Str = inStr;
@@ -77,12 +73,12 @@ public:
     }
 
     std::string m1Str;
-    int m1Int1;
-    int m1Int2;
+    int m1Int1 = 0;
+    int m1Int2 = 0;
 
     std::string m2Str;
-    int m2Int1;
-    int m2Int2;
+    int m2Int1 = 0;
+    int m2Int2 = 0;
 
 };
 

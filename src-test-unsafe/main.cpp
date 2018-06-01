@@ -31,8 +31,10 @@
 #include "windows.h"
 #endif // _MSC_VER
 
+#include <typeinfo>
 #include "sts/signals/Info.h"
 #include "gtest/gtest.h"
+#include "sts/signals/Connection.h"
 
 /**************************************************************************************************/
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -43,7 +45,8 @@ GTEST_API_ int main(int argc, char ** argv) {
     std::cout << " v:"
             << STS_SIGNALS_VERSION_MAJOR << "."
             << STS_SIGNALS_VERSION_MINOR << "."
-            << STS_SIGNALS_VERSION_PATCH;
+            << STS_SIGNALS_VERSION_PATCH << std::endl;
+    std::cout << typeid(sts::signals::Delegate<int>()).name() << std::endl;
     std::cout << std::endl << std::endl;
 
     testing::InitGoogleTest(&argc, argv);

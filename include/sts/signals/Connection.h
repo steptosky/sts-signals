@@ -36,11 +36,11 @@
 namespace sts {
 namespace signals {
 
+    /// @cond private
+
     /**************************************************************************************************/
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     /**************************************************************************************************/
-
-    /// @cond private
 
     /*!
      * \details Represents signal-slot connection.
@@ -61,13 +61,23 @@ namespace signals {
          * \param      [in] id of delegate which is in the signal list. 
          *                  For example: because of this id the connection knows
          *                  what the delegate work with.
-         * \param [in, out] disconnect delegate which is used for disconnecting.
-         *                  When you call \link disconnect \endlink 
-         *                  actually it will call this delegate. 
          */
-        explicit Connection(const DelegateId id, const DisconnectDeligate & disconnect = DisconnectDeligate())
+        explicit Connection(const DelegateId id)
+            : mId(id) {}
+
+        /*!
+         * \details Create with delegate id and delegate for disconnecting.
+         *
+         * \param      [in] id of delegate which is in the signal list.
+         *                  For example: because of this id the connection knows
+         *                  what the delegate work with.
+         * \param [in, out] disconnect delegate which is used for disconnecting.
+         *                  When you call \link disconnect \endlink
+         *                  actually it will call this delegate.
+         */
+        explicit Connection(const DelegateId id, DisconnectDeligate && disconnect)
             : mId(id),
-              mDisconnectDeligate(disconnect) {}
+              mDisconnectDeligate(std::move(disconnect)) {}
 
         //---------------------------------------------------------------
 
@@ -105,12 +115,13 @@ namespace signals {
          * \details This method works with the auto-disconnecter class.
          * \note For internal use only.
          * \tparam T auto-disconnecter
+         * \param [in, out] connection
          * \param [in, out] p pointer to auto-disconnecter class.
          */
         template<typename T>
-        void addToAutoDisconnecter(T * p) {
-            if (isValid()) {
-                setConnectionToList(p->mSignalDelegates);
+        static void addToAutoDisconnecter(Connection && connection, T * p) {
+            if (connection.isValid()) {
+                setConnectionToList(std::move(connection), p->mSignalDelegates);
             }
         }
 
@@ -120,22 +131,25 @@ namespace signals {
          * \details This method works with the auto-disconnecter class.
          * \note For internal use only.
          * \tparam T auto-disconnecter
+         * \param [in] connection
          * \param [in, out] p pointer to auto-disconnecter class.
          */
         template<typename T>
-        void removeFromAutoDisconnecter(T * p) {
-            if (isValid()) {
-                removeConnectionFromList(p->mSignalDelegates);
+        static void removeFromAutoDisconnecter(const Connection & connection, T * p) {
+            if (connection.isValid()) {
+                removeConnectionFromList(connection, p->mSignalDelegates);
             }
         }
 
     private:
 
-        void setConnectionToList(List & p) { p.emplace_back(*this); }
+        static void setConnectionToList(Connection && connection, List & p) {
+            p.emplace_back(std::move(connection));
+        }
 
-        void removeConnectionFromList(List & p) {
+        static void removeConnectionFromList(const Connection & connection, List & p) {
             const auto it = std::find_if(p.begin(), p.end(), [&](const Connection & v) {
-                return *this == v;
+                return connection == v;
             });
             if (it != p.end()) {
                 p.erase(it);
@@ -146,10 +160,11 @@ namespace signals {
         DisconnectDeligate mDisconnectDeligate;
     };
 
-    /// @endcond
-
     /**************************************************************************************************/
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     /**************************************************************************************************/
+
+    /// @endcond
+
 }
 }

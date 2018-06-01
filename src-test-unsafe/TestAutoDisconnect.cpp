@@ -54,12 +54,8 @@ public:
     Receiver1() = default;
     Receiver1(const Receiver1 &) = default;
     Receiver1 & operator=(const Receiver1 &) = default;
-    virtual ~Receiver1() = default;
 
-#if _MSC_VER > 1800 // (2013)
-    Receiver1(Receiver1 &&) = default;
-    Receiver1 & operator=(Receiver1 &&) = default;
-#endif
+    virtual ~Receiver1() = default;
 
     void slotR1(const bool state) { mCalledR1 = state; }
     bool mCalledR1 = false;
@@ -74,12 +70,8 @@ public:
     Receiver2() = default;
     Receiver2(const Receiver2 &) = default;
     Receiver2 & operator=(const Receiver2 &) = default;
-    virtual ~Receiver2() = default;
 
-#if _MSC_VER > 1800 // (2013)
-    Receiver2(Receiver2 &&) = default;
-    Receiver2 & operator=(Receiver2 &&) = default;
-#endif
+    virtual ~Receiver2() = default;
 
     void slotR2(const bool state) { mCalledR2 = state; }
     bool mCalledR2 = false;
@@ -94,12 +86,8 @@ public:
     Receiver3() = default;
     Receiver3(const Receiver3 &) = default;
     Receiver3 & operator=(const Receiver3 &) = default;
-    virtual ~Receiver3() = default;
 
-#if _MSC_VER > 1800 // (2013)
-    Receiver3(Receiver3 &&) = default;
-    Receiver3 & operator=(Receiver3 &&) = default;
-#endif
+    virtual ~Receiver3() = default;
 
     void slotR3(const bool state) { mCalledR3 = state; }
     bool mCalledR3 = false;

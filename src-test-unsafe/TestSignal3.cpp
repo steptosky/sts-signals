@@ -1,5 +1,3 @@
-#pragma once
-
 /*
 **  Copyright(C) 2018, StepToSky
 **
@@ -29,55 +27,74 @@
 **  Contacts: www.steptosky.com
 */
 
-#include <cstddef>
+#include "gtest/gtest.h"
+#include "sts/signals/Signal.h"
 
 /**************************************************************************************************/
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /**************************************************************************************************/
 
-class Receiver {
+// Test hierarchy: calling
+
+/**************************************************************************************************/
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/**************************************************************************************************/
+
+typedef sts::signals::Signal<const size_t> Signal;
+
+/**************************************************************************************************/
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/**************************************************************************************************/
+
+class AbstractReceiver {
 public:
 
-    Receiver() { staticReset(); }
-    Receiver(const Receiver &) = default;
-    virtual ~Receiver() = default;
-    Receiver & operator=(const Receiver &) = default;
+    AbstractReceiver() = default;
+    AbstractReceiver(const AbstractReceiver &) = default;
+    AbstractReceiver & operator=(const AbstractReceiver &) = default;
 
-#if _MSC_VER > 1800 // (2013)
-    Receiver(Receiver &&) = default;
-    Receiver & operator=(Receiver &&) = default;
-#endif
+    virtual ~AbstractReceiver() = default;
 
-    void slot(const size_t v1, const size_t v2) {
-        mV1 = v1;
-        mV2 = v2;
-    }
+    virtual void slot(const size_t val) { mAbstract = val; }
+    size_t mAbstract = 0;
 
-    static void staticSlot1(const size_t v1, const size_t v2) {
-        g1V1 = v1;
-        g1V2 = v2;
-    }
-
-    static void staticSlot2(const size_t v1, const size_t v2) {
-        g2V1 = v1;
-        g2V2 = v2;
-    }
-
-    static void staticReset() {
-        g1V1 = 0;
-        g1V2 = 0;
-        g2V1 = 0;
-        g2V2 = 0;
-    }
-
-    size_t mV1 = 0;
-    size_t mV2 = 0;
-
-    static size_t g1V1;
-    static size_t g1V2;
-    static size_t g2V1;
-    static size_t g2V2;
 };
+
+class DerivedReceiver : public AbstractReceiver {
+public:
+
+    DerivedReceiver() = default;
+    DerivedReceiver(const DerivedReceiver &) = default;
+    DerivedReceiver & operator=(const DerivedReceiver &) = default;
+
+    virtual ~DerivedReceiver() = default;
+
+    void slot(const size_t val) override { mDerived = val; }
+    size_t mDerived = 0;
+
+};
+
+/**************************************************************************************************/
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/**************************************************************************************************/
+
+TEST(Signal3, virtual_slot_case1) {
+    Signal signal;
+    DerivedReceiver r;
+    signal.connect(&r, &DerivedReceiver::slot);
+    signal(5);
+    ASSERT_EQ(0, r.mAbstract);
+    ASSERT_EQ(5, r.mDerived);
+}
+
+TEST(Signal3, virtual_slot_case2) {
+    Signal signal;
+    DerivedReceiver r;
+    signal.connect(static_cast<AbstractReceiver*>(&r), &AbstractReceiver::slot);
+    signal(5);
+    ASSERT_EQ(0, r.mAbstract);
+    ASSERT_EQ(5, r.mDerived);
+}
 
 /**************************************************************************************************/
 ////////////////////////////////////////////////////////////////////////////////////////////////////

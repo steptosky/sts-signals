@@ -2,7 +2,7 @@
 #//////////////////////////////////////////////////////////////////////////////////#
 #----------------------------------------------------------------------------------#
 #
-#  Copyright (C) 2018, StepToSky
+#  Copyright (C) 2017, StepToSky
 #  All rights reserved.
 #
 #  Redistribution and use in source and binary forms, with or without
@@ -33,104 +33,77 @@
 #----------------------------------------------------------------------------------#
 #//////////////////////////////////////////////////////////////////////////////////#
 #----------------------------------------------------------------------------------#
-# init
+# project
 
 cmake_minimum_required (VERSION 3.7.0)
 
-message(STATUS "==============================================")
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+set(PROJECT test-${ProjectId}-safe)
+project(${PROJECT} VERSION ${ProjectVersion} LANGUAGES "CXX")
+
+#----------------------------------------------------------------------------------#
+#//////////////////////////////////////////////////////////////////////////////////#
+#----------------------------------------------------------------------------------#
+# project files
+
+file(GLOB_RECURSE CM_FILES 
+	"*.h" "*.inl" "*.cpp"
+    "${CMAKE_SOURCE_DIR}/include/sts/signals/*.h" 
+	"${CMAKE_SOURCE_DIR}/include/sts/signals/*.inl" 
+	"${CMAKE_SOURCE_DIR}/include/sts/signals/*.cpp"
+    "${CMAKE_SOURCE_DIR}/src-test-unsafe/*.h" 
+	"${CMAKE_SOURCE_DIR}/src-test-unsafe/*.inl" 
+	"${CMAKE_SOURCE_DIR}/src-test-unsafe/*.cpp"
+)
+include(StsGroupFiles)
+groupFiles("${CM_FILES}")
  
 #----------------------------------------------------------------------------------#
 #//////////////////////////////////////////////////////////////////////////////////#
 #----------------------------------------------------------------------------------#
-# Solution
+# targets 
 
-project("sts-signals" LANGUAGES "CXX")
-
-#----------------------------------------------------------------------------------#
-# Info file
-
-include(StsProjectDesc)
-include(StsInfoFilesGenerator)
-genInfoFile(StsProjectDesc "${CMAKE_SOURCE_DIR}/include/sts/signals/Info.h")
+add_executable(${PROJECT} ${CM_FILES})
+add_dependencies(${PROJECT} ${ProjectId})
+add_definitions(-DTESTING)
+add_definitions(-DSTS_SIGNALS_SAFE_DELEGATE)
 
 #----------------------------------------------------------------------------------#
-#//////////////////////////////////////////////////////////////////////////////////#
-#----------------------------------------------------------------------------------#
-# options 
+# linkage 
 
-if (NOT TEST_REPORT_DIR)
-	set(TEST_REPORT_DIR ${CMAKE_SOURCE_DIR}/reports/tests)
-endif()
+target_include_directories(${PROJECT} PRIVATE ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(${PROJECT} PRIVATE ${CMAKE_SOURCE_DIR}/src)
 
-if (NOT BUILD_SHARED_LIBS)
-	set (BUILD_SHARED_LIBS OFF)
-endif()
-
-option(BUILD_TESTS "Build all of it's own tests." OFF) 
-
-message(STATUS "==============================================")
-if (NOT CMAKE_BUILD_TYPE)
-	message(STATUS "Build type = multi configuration or undefined")
-else()
-	message(STATUS "Build type = ${CMAKE_BUILD_TYPE}")
-endif()
-message(STATUS "Build tests = ${BUILD_TESTS}")
-message(STATUS "Shared lib = ${BUILD_SHARED_LIBS}")
-message(STATUS "Test report dir = ${TEST_REPORT_DIR}")
-message(STATUS "Installation prefix = ${CMAKE_INSTALL_PREFIX}")
-message(STATUS "==============================================")
+target_link_libraries(${PROJECT} ${ProjectId})
+target_link_libraries(${PROJECT} CONAN_PKG::gtest)
 
 #----------------------------------------------------------------------------------#
-#//////////////////////////////////////////////////////////////////////////////////#
-#----------------------------------------------------------------------------------#
-# conan.io this must be after options.
+# compile options
 
-include(StsConan)
-conan_cmake_run(CONANFILE conanfile.py
-                BASIC_SETUP CMAKE_TARGETS
-                BUILD outdated)				
-				
-#----------------------------------------------------------------------------------#
-#//////////////////////////////////////////////////////////////////////////////////#
-#----------------------------------------------------------------------------------#		
-# help targets
+target_compile_options(${PROJECT} 
+	PRIVATE "$<$<CXX_COMPILER_ID:MSVC>:/W4>"
+    PRIVATE "$<$<CXX_COMPILER_ID:MSVC>:/WX>"
+	
+	PRIVATE "$<$<CXX_COMPILER_ID:AppleClang>:-Wno-unknown-pragmas>"
+	PRIVATE "$<$<CXX_COMPILER_ID:AppleClang>:-pedantic>"
+    PRIVATE  "$<$<CXX_COMPILER_ID:AppleClang>:-Werror>"
+	
+	PRIVATE "$<$<CXX_COMPILER_ID:Clang>:-Wno-unknown-pragmas>"
+	PRIVATE "$<$<CXX_COMPILER_ID:Clang>:-pedantic>"
+	PRIVATE  "$<$<CXX_COMPILER_ID:Clang>:-Werror>"
 
-add_custom_target("Clean-Install-Dir"
-	COMMAND cmake -E remove_directory ${CMAKE_INSTALL_PREFIX}
-)
-
-add_custom_target("Clean-Tests-Report"
-	COMMAND cmake -E remove_directory ${TEST_REPORT_DIR}
+	PRIVATE "$<$<CXX_COMPILER_ID:GNU>:-Wno-unknown-pragmas>"
+	PRIVATE "$<$<CXX_COMPILER_ID:GNU>:-pedantic>"
+	PRIVATE  "$<$<CXX_COMPILER_ID:GNU>:-Werror>"
 )
 
 #----------------------------------------------------------------------------------#
 #//////////////////////////////////////////////////////////////////////////////////#
 #----------------------------------------------------------------------------------#
-# sub projects
+# testing
 
-add_subdirectory(src)
-if(BUILD_TESTS)
-	enable_testing()
-	add_subdirectory(src-test-unsafe)
-	add_subdirectory(src-test-safe)
-endif()
-
-#----------------------------------------------------------------------------------#
-#//////////////////////////////////////////////////////////////////////////////////#
-#----------------------------------------------------------------------------------#
-# make package config version
-
-include(CMakePackageConfigHelpers)
-set(LIB_CONFIG_VER "${CMAKE_CURRENT_BINARY_DIR}/${ProjectId}ConfigVersion.cmake")
-# COMPATIBILITY (AnyNewerVersion|SameMajorVersion|ExactVersion)
-write_basic_package_version_file(
-	${LIB_CONFIG_VER}
-	VERSION ${ProjectVersion} 
-	COMPATIBILITY SameMajorVersion
+add_test(NAME ${PROJECT} COMMAND $<TARGET_FILE:${PROJECT}>  
+	"--gtest_output=xml:${TEST_REPORT_DIR}/${PROJECT}.xml"
 )
-
-install(FILES ${LIB_CONFIG_VER} DESTINATION cmake)								
 
 #----------------------------------------------------------------------------------#
 #//////////////////////////////////////////////////////////////////////////////////#
