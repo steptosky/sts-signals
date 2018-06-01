@@ -8,9 +8,6 @@
 #### [StsProjectDesc.cmake](cmake/StsProjectDesc.cmake)
 - Set the correct version in the file and check other information there.
 
-## Cmake
-- Check whether the information in the [StsProjectDesc.cmake](cmake/StsProjectDesc.cmake) file is correct.
-
 #### [conanfile.py](conanfile.py)
 - Set the correct version.
 - Check whether the file is corresponding to cmake settings and options, 

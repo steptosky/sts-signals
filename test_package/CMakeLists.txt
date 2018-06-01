@@ -46,7 +46,7 @@ conan_basic_setup(TARGETS)
 
 add_executable(${TARGET_NAME} test_package.cpp)
 target_link_libraries(${TARGET_NAME} CONAN_PKG::sts-signals)
-set_target_properties(${TARGET_NAME} PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED YES)
+set_target_properties(${TARGET_NAME} PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED YES)
 
 target_compile_options(${TARGET_NAME} 
 	PRIVATE "$<$<CXX_COMPILER_ID:MSVC>:/W4>"
