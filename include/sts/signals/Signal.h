@@ -100,24 +100,28 @@ namespace signals {
      *           It is also able to call slots almost directly and the call can even be inlined.\n
      * \code
      *       // Simple, not very accurate benchmarks. (01.06.2018)
-     *       // This tests show you differences between safe and unsafe delegates
+     *       // This tests show you differences between safe and unsafe delegates,
      *       // so it doesn't matter what PC was used for this tests.
      *       |---------------------------|-------------|-------------|
-     *       | Release benchmark VS 2017 |  SAFE (ms)  | UNSAFE (ms) |
+     *       | Release benchmark VS 2017 |    SAFE     |   UNSAFE    |
      *       |--------------------------:|:-----------:|:-----------:|
-     *       | Receivers                 |    50000    |    50000    |
-     *       | Connecting                |    13901    |     1021    |
-     *       | Call                      |   0.3788    |   0.2885    |
-     *       | Disconnecting             |     1628    |     1120    |
+     *       | Receivers                 |   50000  ms |   50000  ms |
+     *       | Connecting                |   14031  ms |    1021  ms |
+     *       | Call                      |  0.3522  ms |  0.2885  ms |
+     *       | Disconnecting             |    1430  ms |    1120  ms |
+     *       |---------------------------|-------------|-------------|
+     *       | Memory                    |   ~10.1 MB  |    ~7.1 MB  |
      *       |---------------------------|-------------|-------------|
      *       
      *       |---------------------------|-------------|-------------|
-     *       | Debug benchmark VS 2017   |  SAFE (ms)  | UNSAFE (ms) |
+     *       | Debug benchmark VS 2017   |    SAFE     |   UNSAFE    |
      *       |--------------------------:|:-----------:|:-----------:|
-     *       | Receivers                 |     5000    |     5000    |
-     *       | Connecting                |     2079    |     1174    |
-     *       | Call                      |   0.1128    |   0.0590    |
-     *       | Disconnecting             |      575    |       29    |
+     *       | Receivers                 |   10000  ms |   10000  ms |
+     *       | Connecting                |   11914  ms |    4298  ms |
+     *       | Call                      |  0.6627  ms |  0.1163  ms |
+     *       | Disconnecting             |    3619  ms |      75  ms |
+     *       |---------------------------|-------------|-------------|
+     *       | Memory                    |    ~5.9 MB  |    ~4.1 MB  |
      *       |---------------------------|-------------|-------------|
      * \endcode
      * 

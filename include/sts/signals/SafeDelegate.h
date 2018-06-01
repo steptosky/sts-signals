@@ -31,7 +31,7 @@
 
 #include "Defines.h"
 #include <cassert>
-#include <algorithm>
+#include <memory>
 #include "DelegateId.h"
 
 namespace sts {
@@ -163,6 +163,7 @@ namespace signals {
      */
     template<typename... Args>
     class SafeDelegate {
+        typedef std::unique_ptr<ISafeDelegate<Args ...>> CallPtr;
     public:
 
         /*!
@@ -202,27 +203,25 @@ namespace signals {
               mDisconnectObj(r.mDisconnectObj) { }
 
         SafeDelegate(SafeDelegate && r) NOEXCEPT
-            : mCall(r.mCall),
+            : mCall(r.mCall.release()),
               mDisconnectObj(r.mDisconnectObj) {
 
-            r.mCall = nullptr;
+            r.mCall.reset();
             r.mDisconnectObj = nullptr;
         }
 
-        ~SafeDelegate() {
-            delete mCall;
-        }
+        ~SafeDelegate() = default;
 
         SafeDelegate & operator=(const SafeDelegate & r) {
-            delete mCall;
-            mCall = r.mCall ? r.mCall->clone() : nullptr;
+            mCall.reset(r.mCall ? r.mCall->clone() : nullptr);
             mDisconnectObj = r.mDisconnectObj;
             return *this;
         }
 
         SafeDelegate & operator=(SafeDelegate && r) NOEXCEPT {
-            std::swap(mCall, r.mCall);
-            std::swap(mDisconnectObj, r.mDisconnectObj);
+            mCall.reset(r.mCall.release());
+            mDisconnectObj = r.mDisconnectObj;
+            r.mDisconnectObj = nullptr;
             return *this;
         }
 
@@ -271,7 +270,7 @@ namespace signals {
         explicit SafeDelegate(ISafeDelegate<Args ...> * delegate)
             : mCall(delegate) {}
 
-        ISafeDelegate<Args ...> * mCall = nullptr;
+        CallPtr mCall;
         AutoDisconnect * mDisconnectObj = nullptr;
 
     };

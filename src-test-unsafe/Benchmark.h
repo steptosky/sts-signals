@@ -60,7 +60,7 @@ public:
 
 inline void safeBenchmark() {
 #ifndef NDEBUG
-    const size_t count = 5000;
+    const size_t count = 10000;
 #else
     const size_t count = 50000;
 #endif

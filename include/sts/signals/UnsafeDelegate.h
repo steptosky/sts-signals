@@ -29,9 +29,7 @@
 **  Contacts: www.steptosky.com
 */
 
-#include "Defines.h"
 #include <cassert>
-#include <algorithm>
 #include "DelegateId.h"
 
 namespace sts {
