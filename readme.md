@@ -22,7 +22,7 @@ license for more information read the [license](license.txt) file.
 - In this library some _dirty hacks_ are used to make slots calling as fast as possible.   
   Author of those hacks don't exactly know when those hacks can lead to problems, in theory never but it isn't guaranteed. 
   For some controversial situations the tests are written.  
-  If you define _STS_SIGNALS_SAFE_DELEGATE_ in your project than those hacks will not be used. 
+  If you define _STS_SIGNALS_SAFE_DELEGATE_ in your project then those hacks will not be used. 
   You can find more information about this definition in the _Signal_ class description in source file.
 - This implementation isn't thread safe.
 - This implementation doesn't work with return value. Author thinks it isn't necessary,

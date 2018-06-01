@@ -57,7 +57,6 @@ namespace signals {
 
         /*!
          * \details Create with delegate id and delegate for disconnecting.
-         *  
          * \param      [in] id of delegate which is in the signal list. 
          *                  For example: because of this id the connection knows
          *                  what the delegate work with.
@@ -67,7 +66,6 @@ namespace signals {
 
         /*!
          * \details Create with delegate id and delegate for disconnecting.
-         *
          * \param      [in] id of delegate which is in the signal list.
          *                  For example: because of this id the connection knows
          *                  what the delegate work with.
@@ -117,6 +115,7 @@ namespace signals {
          * \tparam T auto-disconnecter
          * \param [in, out] connection
          * \param [in, out] p pointer to auto-disconnecter class.
+         * \todo check ii template can be changed to real class.
          */
         template<typename T>
         static void addToAutoDisconnecter(Connection && connection, T * p) {
@@ -133,6 +132,7 @@ namespace signals {
          * \tparam T auto-disconnecter
          * \param [in] connection
          * \param [in, out] p pointer to auto-disconnecter class.
+         * \todo check ii template can be changed to real class.
          */
         template<typename T>
         static void removeFromAutoDisconnecter(const Connection & connection, T * p) {
