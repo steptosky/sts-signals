@@ -3,7 +3,7 @@
 
 | CI        | master | develop | other |
 | --------- |:------:|:-------:|:------:|
-| appveyor  |[![Build status](https://ci.appveyor.com/api/projects/status/ttnd36rho34b3qqt/branch/master?svg=true)](https://ci.appveyor.com/project/steptosky/sts-signals/branch/master)|[![Build status](https://ci.appveyor.com/api/projects/status/ttnd36rho34b3qqt/branch/master?svg=true)](https://ci.appveyor.com/project/steptosky/sts-signals/branch/develop)|[![Build status](https://ci.appveyor.com/api/projects/status/ttnd36rho34b3qqt?svg=true)](https://ci.appveyor.com/project/steptosky/sts-signals)|
+| appveyor  |[![Build status](https://ci.appveyor.com/api/projects/status/ttnd36rho34b3qqt/branch/master?svg=true)](https://ci.appveyor.com/project/steptosky/sts-signals/branch/master)|[![Build status](https://ci.appveyor.com/api/projects/status/ttnd36rho34b3qqt/branch/develop?svg=true)](https://ci.appveyor.com/project/steptosky/sts-signals/branch/develop)|[![Build status](https://ci.appveyor.com/api/projects/status/ttnd36rho34b3qqt?svg=true)](https://ci.appveyor.com/project/steptosky/sts-signals)|
 | travis    |[![Build Status](https://travis-ci.org/steptosky/sts-signals.svg?branch=master)](https://travis-ci.org/steptosky/sts-signals)|[![Build Status](https://travis-ci.org/steptosky/sts-signals.svg?branch=develop)](https://travis-ci.org/steptosky/sts-signals)|[![Build Status](https://travis-ci.org/steptosky/sts-signals.svg)](https://travis-ci.org/steptosky/sts-signals)|
 
 ---
