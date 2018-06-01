@@ -82,6 +82,8 @@ namespace signals {
             assert(function);
         }
 
+        virtual ~SafeStaticDelegate() = default;
+
         void invoke(Args ... args) override {
             mFunc(args ...);
         }
@@ -116,6 +118,8 @@ namespace signals {
             assert(obj);
             assert(method);
         }
+
+        virtual ~SafeMethodDelegate() = default;
 
         void invoke(Args ... args) override {
             (mObj->*mMethod)(args ...);

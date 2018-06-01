@@ -1,3 +1,5 @@
+#pragma once
+
 /*
 **  Copyright(C) 2018, StepToSky
 **
@@ -27,39 +29,77 @@
 **  Contacts: www.steptosky.com
 */
 
-#ifdef _MSC_VER
-#include "windows.h"
-#endif // _MSC_VER
-
-#include <typeinfo>
-#include "sts/signals/Info.h"
-#include "gtest/gtest.h"
-#include "sts/signals/Connection.h"
-#include "Benchmark.h"
+#include <chrono>
 
 /**************************************************************************************************/
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /**************************************************************************************************/
 
-GTEST_API_ int main(int argc, char ** argv) {
-    std::cout << STS_SIGNALS_PROJECT_ID;
-    std::cout << " v:"
-            << STS_SIGNALS_VERSION_MAJOR << "."
-            << STS_SIGNALS_VERSION_MINOR << "."
-            << STS_SIGNALS_VERSION_PATCH << std::endl;
-    std::cout << typeid(sts::signals::Delegate<int>()).name() << std::endl;
-    std::cout << std::endl << std::endl;
+template<typename Val>
+class SimpleTimer {
+public:
 
-    testing::InitGoogleTest(&argc, argv);
-    const int res = RUN_ALL_TESTS();
+    SimpleTimer() = default;
+    explicit SimpleTimer(bool inStart);
 
-    //safeBenchmark();
+    //-------------------------------------------------------------------------
 
-#ifdef _MSC_VER
-    system("pause");
-#endif // _MSC_VER
+    void start();
+    SimpleTimer & now();
 
-    return res;
+    Val toSeconds();
+    Val toMilliSeconds();
+    Val toMicroSeconds();
+    Val toNanoSeconds();
+
+    //-------------------------------------------------------------------------
+
+private:
+
+    std::chrono::steady_clock::time_point mStart;
+    std::chrono::steady_clock::time_point mEnd;
+
+};
+
+/**************************************************************************************************/
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/**************************************************************************************************/
+
+template<typename Val>
+SimpleTimer<Val>::SimpleTimer(const bool inStart) {
+    if (inStart)
+        start();
+}
+
+template<typename Val>
+void SimpleTimer<Val>::start() {
+    mStart = std::chrono::steady_clock::now();
+}
+
+template<typename Val>
+SimpleTimer<Val> & SimpleTimer<Val>::now() {
+    mEnd = std::chrono::steady_clock::now();
+    return *this;
+}
+
+template<typename Val>
+Val SimpleTimer<Val>::toSeconds() {
+    return std::chrono::duration_cast<std::chrono::duration<Val, std::ratio<1, 1>>>(mEnd - mStart).count();
+}
+
+template<typename Val>
+Val SimpleTimer<Val>::toMilliSeconds() {
+    return std::chrono::duration_cast<std::chrono::duration<Val, std::milli>>(mEnd - mStart).count();
+}
+
+template<typename Val>
+Val SimpleTimer<Val>::toMicroSeconds() {
+    return std::chrono::duration_cast<std::chrono::duration<Val, std::micro>>(mEnd - mStart).count();
+}
+
+template<typename Val>
+Val SimpleTimer<Val>::toNanoSeconds() {
+    return std::chrono::duration_cast<std::chrono::duration<Val, std::nano>>(mEnd - mStart).count();
 }
 
 /**************************************************************************************************/
