@@ -123,26 +123,8 @@ namespace signals {
         //--------------------------------------------
 
         UnsafeDelegate() = default;
-        UnsafeDelegate(const UnsafeDelegate &) = default;
-
-        UnsafeDelegate(UnsafeDelegate && r) NOEXCEPT
-            : mObj(r.mObj),
-              mDisconnectObj(r.mDisconnectObj),
-              mCall(r.mCall) {
-
-            r.mObj = nullptr;
-            r.mDisconnectObj = nullptr;
-            r.mCall = Callable();
-        }
-
-        UnsafeDelegate & operator=(const UnsafeDelegate &) = default;
-
-        UnsafeDelegate & operator=(UnsafeDelegate && r) NOEXCEPT {
-            std::swap(mObj, r.mObj);
-            std::swap(mDisconnectObj, r.mDisconnectObj);
-            std::swap(mCall, r.mCall);
-            return *this;
-        }
+        UnsafeDelegate(const UnsafeDelegate &r) = default;
+        UnsafeDelegate & operator=(const UnsafeDelegate &r) = default;
 
         ~UnsafeDelegate() = default;
 
