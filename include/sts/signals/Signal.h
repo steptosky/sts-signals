@@ -96,9 +96,31 @@ namespace signals {
      *       With the define STS_SIGNALS_SAFE_DELEGATE you can switch the signal to use safe variant of delegate.\n
      *       \li Safe delegate uses polymorphism for storing slots data, so each connection and copy allocates resources in the heap.\n
      *           It also uses virtual methods to call slot unlike to the unsafe version of the delegate.
-     *       \li Unsafe version of delegate has hacks with types that allow you to store slots without allocating resources on heap.
+     *       \li Unsafe version of delegate has hacks with types that allow you to store slots without allocating resources on heap.\n
      *           It is also able to call slots almost directly and the call can even be inlined.\n
-     *           
+     * \code
+     *       // Simple, not very accurate benchmarks. (01.06.2018)
+     *       // This tests show you differences between safe and unsafe delegates
+     *       // so it doesn't matter what PC was used for this tests.
+     *       |---------------------------|-------------|-------------|
+     *       | Release benchmark VS 2017 |  SAFE (ms)  | UNSAFE (ms) |
+     *       |--------------------------:|:-----------:|:-----------:|
+     *       | Receivers                 |    50000    |    50000    |
+     *       | Connecting                |    13901    |     1021    |
+     *       | Call                      |   0.3788    |   0.2885    |
+     *       | Disconnecting             |     1628    |     1120    |
+     *       |---------------------------|-------------|-------------|
+     *       
+     *       |---------------------------|-------------|-------------|
+     *       | Debug benchmark VS 2017   |  SAFE (ms)  | UNSAFE (ms) |
+     *       |--------------------------:|:-----------:|:-----------:|
+     *       | Receivers                 |     5000    |     5000    |
+     *       | Connecting                |     2079    |     1174    |
+     *       | Call                      |   0.1128    |   0.0590    |
+     *       | Disconnecting             |      575    |       29    |
+     *       |---------------------------|-------------|-------------|
+     * \endcode
+     * 
      * \tparam Args signal arguments 
      * \code 
      * sts::Signal<> // no arguments
