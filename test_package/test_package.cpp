@@ -60,12 +60,12 @@ int main (void){
     std::cout << std::endl;
     std::cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << std::endl;
     std::cout << "@   " << std::endl;
-	std::cout << "@   " << STS_SIGNALS_PROJECT_ID << " : " << STS_SIGNALS_VERSION_STRING << std::endl;
+    std::cout << "@   " << STS_SIGNALS_PROJECT_ID << " : " << STS_SIGNALS_VERSION_STRING << std::endl;
     s.mSignal();
     std::cout << "@   " << std::endl;
     std::cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << std::endl;
     std::cout << std::endl;
-	return 0;
+    return 0;
 }
 
 /**************************************************************************************************/

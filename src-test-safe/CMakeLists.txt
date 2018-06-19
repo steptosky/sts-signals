@@ -46,17 +46,17 @@ project(${PROJECT} VERSION ${ProjectVersion} LANGUAGES "CXX")
 # project files
 
 file(GLOB_RECURSE CM_FILES 
-	"*.h" "*.inl" "*.cpp"
+    "*.h" "*.inl" "*.cpp"
     "${CMAKE_SOURCE_DIR}/include/sts/signals/*.h" 
-	"${CMAKE_SOURCE_DIR}/include/sts/signals/*.inl" 
-	"${CMAKE_SOURCE_DIR}/include/sts/signals/*.cpp"
+    "${CMAKE_SOURCE_DIR}/include/sts/signals/*.inl" 
+    "${CMAKE_SOURCE_DIR}/include/sts/signals/*.cpp"
     "${CMAKE_SOURCE_DIR}/src-test-unsafe/*.h" 
-	"${CMAKE_SOURCE_DIR}/src-test-unsafe/*.inl" 
-	"${CMAKE_SOURCE_DIR}/src-test-unsafe/*.cpp"
+    "${CMAKE_SOURCE_DIR}/src-test-unsafe/*.inl" 
+    "${CMAKE_SOURCE_DIR}/src-test-unsafe/*.cpp"
 )
 include(StsGroupFiles)
 groupFiles("${CM_FILES}")
- 
+
 #----------------------------------------------------------------------------------#
 #//////////////////////////////////////////////////////////////////////////////////#
 #----------------------------------------------------------------------------------#
@@ -80,20 +80,20 @@ target_link_libraries(${PROJECT} CONAN_PKG::gtest)
 # compile options
 
 target_compile_options(${PROJECT} 
-	PRIVATE "$<$<CXX_COMPILER_ID:MSVC>:/W4>"
+    PRIVATE "$<$<CXX_COMPILER_ID:MSVC>:/W4>"
     PRIVATE "$<$<CXX_COMPILER_ID:MSVC>:/WX>"
-	
-	PRIVATE "$<$<CXX_COMPILER_ID:AppleClang>:-Wno-unknown-pragmas>"
-	PRIVATE "$<$<CXX_COMPILER_ID:AppleClang>:-pedantic>"
-    PRIVATE  "$<$<CXX_COMPILER_ID:AppleClang>:-Werror>"
-	
-	PRIVATE "$<$<CXX_COMPILER_ID:Clang>:-Wno-unknown-pragmas>"
-	PRIVATE "$<$<CXX_COMPILER_ID:Clang>:-pedantic>"
-	PRIVATE  "$<$<CXX_COMPILER_ID:Clang>:-Werror>"
 
-	PRIVATE "$<$<CXX_COMPILER_ID:GNU>:-Wno-unknown-pragmas>"
-	PRIVATE "$<$<CXX_COMPILER_ID:GNU>:-pedantic>"
-	PRIVATE  "$<$<CXX_COMPILER_ID:GNU>:-Werror>"
+    PRIVATE "$<$<CXX_COMPILER_ID:AppleClang>:-Wno-unknown-pragmas>"
+    PRIVATE "$<$<CXX_COMPILER_ID:AppleClang>:-pedantic>"
+    PRIVATE  "$<$<CXX_COMPILER_ID:AppleClang>:-Werror>"
+
+    PRIVATE "$<$<CXX_COMPILER_ID:Clang>:-Wno-unknown-pragmas>"
+    PRIVATE "$<$<CXX_COMPILER_ID:Clang>:-pedantic>"
+    PRIVATE  "$<$<CXX_COMPILER_ID:Clang>:-Werror>"
+
+    PRIVATE "$<$<CXX_COMPILER_ID:GNU>:-Wno-unknown-pragmas>"
+    PRIVATE "$<$<CXX_COMPILER_ID:GNU>:-pedantic>"
+    PRIVATE  "$<$<CXX_COMPILER_ID:GNU>:-Werror>"
 )
 
 #----------------------------------------------------------------------------------#
@@ -102,7 +102,7 @@ target_compile_options(${PROJECT}
 # testing
 
 add_test(NAME ${PROJECT} COMMAND $<TARGET_FILE:${PROJECT}>  
-	"--gtest_output=xml:${TEST_REPORT_DIR}/${PROJECT}.xml"
+    "--gtest_output=xml:${TEST_REPORT_DIR}/${PROJECT}.xml"
 )
 
 #----------------------------------------------------------------------------------#

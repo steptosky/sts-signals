@@ -2,7 +2,7 @@
 #//////////////////////////////////////////////////////////////////////////////////#
 #----------------------------------------------------------------------------------#
 #
-#  Copyright (C) 2017, StepToSky
+#  Copyright (C) 2018, StepToSky
 #  All rights reserved.
 #
 #  Redistribution and use in source and binary forms, with or without
@@ -37,29 +37,29 @@
 #
 #----------------------------------------------------------------------------------#
 #
-#	This script is for generation the project description data 
-#		as the environment variables list for using in CI systems
+#   This script is for generation the project description data 
+#       as the environment variables list for using in CI systems
 #
-#	Usage example:
-#		Variables:
-#			FILE_DESC - path to the StsProjectDesc, default: StsProjectDesc.cmake
-#			FILE_OUTPUT - path to the output file default: desc-variables.txt
-#			CONTENT_PREFIX - text will be added as the prefix for each variable, default is empty
+#   Usage example:
+#       Variables:
+#           FILE_DESC - path to the StsProjectDesc, default: StsProjectDesc.cmake
+#           FILE_OUTPUT - path to the output file default: desc-variables.txt
+#           CONTENT_PREFIX - text will be added as the prefix for each variable, default is empty
 #
-#		Use -DCONTENT_PREFIX="Sts" -P StsProjectDescCiEnvGenerator.cmake in the CI build step
-#			it will produce files with environmet variables.
-#		Then insert thet variables into your CI
+#       Use -DCONTENT_PREFIX="Sts" -P StsProjectDescCiEnvGenerator.cmake in the CI build step
+#           it will produce files with environmet variables.
+#       Then insert thet variables into your CI
 #
 #----------------------------------------------------------------------------------#
 #//////////////////////////////////////////////////////////////////////////////////#
 #----------------------------------------------------------------------------------#
 
 if (NOT FILE_DESC)
-	set(FILE_DESC "StsProjectDesc.cmake")
+    set(FILE_DESC "StsProjectDesc.cmake")
 endif()
 
 if (NOT FILE_OUTPUT)
-	set(FILE_OUTPUT "variables.txt")
+    set(FILE_OUTPUT "variables.txt")
 endif()
 
 include(${FILE_DESC})
@@ -78,9 +78,9 @@ set(CONTENT "${CONTENT}${CONTENT_PREFIX}ProjectVersionMinor=${ProjectVersionMino
 set(CONTENT "${CONTENT}${CONTENT_PREFIX}ProjectVersionPatch=${ProjectVersionPatch}\n")
 set(CONTENT "${CONTENT}${CONTENT_PREFIX}ProjectVersion=${ProjectVersion}\n")
 if (ProjectReleaseType)
-	set(CONTENT "${CONTENT}${CONTENT_PREFIX}ProjectVersionTag=${ProjectVersion}-${ProjectReleaseType}\n")
+    set(CONTENT "${CONTENT}${CONTENT_PREFIX}ProjectVersionTag=${ProjectVersion}-${ProjectReleaseType}\n")
 else()
-	set(CONTENT "${CONTENT}${CONTENT_PREFIX}ProjectVersionTag=${ProjectVersion}\n")
+    set(CONTENT "${CONTENT}${CONTENT_PREFIX}ProjectVersionTag=${ProjectVersion}\n")
 endif()
 
 set(CONTENT "${CONTENT}${CONTENT_PREFIX}ProjectGroupId=${ProjectGroupId}\n")

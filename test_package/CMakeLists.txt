@@ -49,20 +49,20 @@ target_link_libraries(${TARGET_NAME} CONAN_PKG::sts-signals)
 set_target_properties(${TARGET_NAME} PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED YES)
 
 target_compile_options(${TARGET_NAME} 
-	PRIVATE "$<$<CXX_COMPILER_ID:MSVC>:/W4>"
+    PRIVATE "$<$<CXX_COMPILER_ID:MSVC>:/W4>"
     PRIVATE "$<$<CXX_COMPILER_ID:MSVC>:/WX>"
-	
-	PRIVATE "$<$<CXX_COMPILER_ID:AppleClang>:-Wno-unknown-pragmas>"
-	PRIVATE "$<$<CXX_COMPILER_ID:AppleClang>:-pedantic>"
-    PRIVATE  "$<$<CXX_COMPILER_ID:AppleClang>:-Werror>"
-	
-	PRIVATE "$<$<CXX_COMPILER_ID:Clang>:-Wno-unknown-pragmas>"
-	PRIVATE "$<$<CXX_COMPILER_ID:Clang>:-pedantic>"
-	PRIVATE  "$<$<CXX_COMPILER_ID:Clang>:-Werror>"
 
-	PRIVATE "$<$<CXX_COMPILER_ID:GNU>:-Wno-unknown-pragmas>"
-	PRIVATE "$<$<CXX_COMPILER_ID:GNU>:-pedantic>"
-	PRIVATE  "$<$<CXX_COMPILER_ID:GNU>:-Werror>"
+    PRIVATE "$<$<CXX_COMPILER_ID:AppleClang>:-Wno-unknown-pragmas>"
+    PRIVATE "$<$<CXX_COMPILER_ID:AppleClang>:-pedantic>"
+    PRIVATE  "$<$<CXX_COMPILER_ID:AppleClang>:-Werror>"
+
+    PRIVATE "$<$<CXX_COMPILER_ID:Clang>:-Wno-unknown-pragmas>"
+    PRIVATE "$<$<CXX_COMPILER_ID:Clang>:-pedantic>"
+    PRIVATE  "$<$<CXX_COMPILER_ID:Clang>:-Werror>"
+
+    PRIVATE "$<$<CXX_COMPILER_ID:GNU>:-Wno-unknown-pragmas>"
+    PRIVATE "$<$<CXX_COMPILER_ID:GNU>:-pedantic>"
+    PRIVATE  "$<$<CXX_COMPILER_ID:GNU>:-Werror>"
 )
 
 #----------------------------------------------------------------------------------#

@@ -2,7 +2,7 @@
 #//////////////////////////////////////////////////////////////////////////////////#
 #----------------------------------------------------------------------------------#
 #
-#  Copyright (C) 2017, StepToSky
+#  Copyright (C) 2018, StepToSky
 #  All rights reserved.
 #
 #  Redistribution and use in source and binary forms, with or without
@@ -42,23 +42,23 @@
 # conan.io
 
 if (BUILD_TESTS)
-	set(ENV{CONAN_TEST_LIB} "1")
+    set(ENV{CONAN_TEST_LIB} "1")
 endif()
 
 set(CONAN_CMAKE_SOURCE "${CMAKE_SOURCE_DIR}/cmake/conan.cmake")
 set(CONAN_CMAKE_DEST "${CMAKE_BINARY_DIR}/conan.cmake")
 
 if(NOT EXISTS ${CONAN_CMAKE_SOURCE})
-	message(STATUS "conan.cmake ${CONAN_CMAKE_SOURCE} isn't found")
-	message(STATUS "Downloading conan.cmake from https://github.com/memsharded/cmake-conan")
-	file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/master/conan.cmake"
-			 ${CONAN_CMAKE_SOURCE}) 
-	message(STATUS "==============================================")
+    message(STATUS "conan.cmake ${CONAN_CMAKE_SOURCE} isn't found")
+    message(STATUS "Downloading conan.cmake from https://github.com/memsharded/cmake-conan")
+    file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/master/conan.cmake"
+            ${CONAN_CMAKE_SOURCE}) 
+    message(STATUS "==============================================")
 endif()
 
 file(COPY ${CONAN_CMAKE_SOURCE} DESTINATION ${CMAKE_BINARY_DIR})
 include(${CONAN_CMAKE_DEST})
-				
+
 #----------------------------------------------------------------------------------#
 #//////////////////////////////////////////////////////////////////////////////////#
 #----------------------------------------------------------------------------------#
