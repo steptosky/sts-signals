@@ -170,7 +170,7 @@ cd ../
 ```
 
 
-#### Build with the conan 'create' scripts examples:
+#### Build with the conan 'create' script example:
 This is just the example for the windows!  
 Probably you will need to adjust it for your purposes.
 ##### Windows (.bat) For Visual Studio 2017 x64
@@ -183,6 +183,15 @@ conan create . steptosky/develop ^
      -s build_type=Release ^
      -e CONAN_TEST_REPORT_DIR="report/conan-test" ^
      -e CONAN_TEST_LIB=1
+     
+conan create . steptosky/develop ^
+     -s compiler="Visual Studio" ^
+     -s compiler.version=15 ^
+     -s compiler.runtime=MDd ^
+     -s build_type=Debug ^
+     -e CONAN_TEST_REPORT_DIR="report/conan-test" ^
+     -e CONAN_TEST_LIB=1
+
 
 pause
 :: remove build dir
