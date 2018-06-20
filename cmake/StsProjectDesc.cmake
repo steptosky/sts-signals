@@ -74,7 +74,7 @@ set(ProjectOrganizationWebLink "www.steptosky.com")
 
 set(ProjectName "signals-slots library")
 set(ProjectShortName "sts-signals")
-set(ProjectDescription "Cross-platform C++ Library for working with the signals-slots pattern.")
+set(ProjectDescription "Cross-platform headers only C++ Library for working with signals-slots pattern.")
 set(ProjectWebLink "www.steptosky.com")
 set(ProjectSourcesWebLink "https://github.com/steptosky/sts-signals")
 
@@ -83,7 +83,7 @@ set(ProjectSourcesWebLink "https://github.com/steptosky/sts-signals")
 
 set(ProjectVersionMajor 0)
 set(ProjectVersionMinor 1)
-set(ProjectVersionPatch 0)
+set(ProjectVersionPatch 1)
 set(ProjectVersion "${ProjectVersionMajor}.${ProjectVersionMinor}.${ProjectVersionPatch}")
 set(ProjectReleaseType "alpha") # You can use any string you wish
 

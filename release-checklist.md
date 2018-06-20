@@ -1,6 +1,6 @@
 ## Release checklist
 - Check whether this release-checklist is correct.
-- Check whether the change log is correct.
+- Check whether the [change log](changelog.md) is correct.
 - Check whether the doxygen does not have unexpected warnings and errors while generating the documentation.
 - Check whether the variables of the build system (CMake) in the file [readme.md](readme.md) are described correctly if they were changed, deleted, added.
 - Check whether the dependencies and their version are described correctly in the [readme.md](readme.md) file. 

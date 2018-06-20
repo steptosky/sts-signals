@@ -43,11 +43,11 @@ vcs_data.load_vcs_data()
 
 
 class LibConan(ConanFile):
-    version = "0.1.0"
+    version = "0.1.1"
     name = 'sts-signals'
     url = 'https://github.com/steptosky/sts-signals'
     license = 'BSD 3-Clause'
-    description = "Cross-platform C++ Library for working with the signals-slots pattern."
+    description = "Cross-platform headers only C++ Library for working with signals-slots pattern."
     author = 'StepToSky <info@steptosky.com>'
     settings = "os", "compiler", "build_type", "arch"
     default_options = 'gtest:shared=False', 'gtest:build_gmock=True'
