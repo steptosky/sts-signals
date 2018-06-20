@@ -60,20 +60,20 @@ genInfoFile(StsProjectDesc "${CMAKE_SOURCE_DIR}/include/sts/signals/Info.h")
 # options 
 
 if (NOT TEST_REPORT_DIR)
-	set(TEST_REPORT_DIR ${CMAKE_SOURCE_DIR}/reports/tests)
+    set(TEST_REPORT_DIR ${CMAKE_SOURCE_DIR}/reports/tests)
 endif()
 
 if (NOT BUILD_SHARED_LIBS)
-	set (BUILD_SHARED_LIBS OFF)
+    set (BUILD_SHARED_LIBS OFF)
 endif()
 
 option(BUILD_TESTS "Build all of it's own tests." OFF) 
 
 message(STATUS "==============================================")
 if (NOT CMAKE_BUILD_TYPE)
-	message(STATUS "Build type = multi configuration or undefined")
+    message(STATUS "Build type = multi configuration or undefined")
 else()
-	message(STATUS "Build type = ${CMAKE_BUILD_TYPE}")
+    message(STATUS "Build type = ${CMAKE_BUILD_TYPE}")
 endif()
 message(STATUS "Build tests = ${BUILD_TESTS}")
 message(STATUS "Shared lib = ${BUILD_SHARED_LIBS}")
@@ -89,19 +89,19 @@ message(STATUS "==============================================")
 include(StsConan)
 conan_cmake_run(CONANFILE conanfile.py
                 BASIC_SETUP CMAKE_TARGETS
-                BUILD outdated)				
-				
+                BUILD outdated)
+
 #----------------------------------------------------------------------------------#
 #//////////////////////////////////////////////////////////////////////////////////#
 #----------------------------------------------------------------------------------#		
 # help targets
 
 add_custom_target("Clean-Install-Dir"
-	COMMAND cmake -E remove_directory ${CMAKE_INSTALL_PREFIX}
+    COMMAND cmake -E remove_directory ${CMAKE_INSTALL_PREFIX}
 )
 
 add_custom_target("Clean-Tests-Report"
-	COMMAND cmake -E remove_directory ${TEST_REPORT_DIR}
+    COMMAND cmake -E remove_directory ${TEST_REPORT_DIR}
 )
 
 #----------------------------------------------------------------------------------#
@@ -111,9 +111,9 @@ add_custom_target("Clean-Tests-Report"
 
 add_subdirectory(src)
 if(BUILD_TESTS)
-	enable_testing()
-	add_subdirectory(src-test-unsafe)
-	add_subdirectory(src-test-safe)
+    enable_testing()
+    add_subdirectory(src-test-unsafe)
+    add_subdirectory(src-test-safe)
 endif()
 
 #----------------------------------------------------------------------------------#
@@ -125,12 +125,12 @@ include(CMakePackageConfigHelpers)
 set(LIB_CONFIG_VER "${CMAKE_CURRENT_BINARY_DIR}/${ProjectId}ConfigVersion.cmake")
 # COMPATIBILITY (AnyNewerVersion|SameMajorVersion|ExactVersion)
 write_basic_package_version_file(
-	${LIB_CONFIG_VER}
-	VERSION ${ProjectVersion} 
-	COMPATIBILITY SameMajorVersion
+    ${LIB_CONFIG_VER}
+    VERSION ${ProjectVersion} 
+    COMPATIBILITY SameMajorVersion
 )
 
-install(FILES ${LIB_CONFIG_VER} DESTINATION cmake)								
+install(FILES ${LIB_CONFIG_VER} DESTINATION cmake)
 
 #----------------------------------------------------------------------------------#
 #//////////////////////////////////////////////////////////////////////////////////#

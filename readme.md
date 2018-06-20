@@ -1,4 +1,4 @@
-# Cross-platform headers only C++ Library for working with the signals-slots pattern.
+# Cross-platform headers only C++ Library for working with signals-slots pattern.
 
 
 | CI        | master | develop | last commit |
@@ -117,8 +117,8 @@ if not exist %dir% mkdir %dir%
 cd %dir%
 ::==========================================================
 call cmake -G "Visual Studio 15 Win64" ../ ^
-	-DCMAKE_INSTALL_PREFIX=../output ^
-	-DBUILD_TESTS=ON
+    -DCMAKE_INSTALL_PREFIX=../output ^
+    -DBUILD_TESTS=ON
 :: Keep it commented if you want to generate VS project only
 :: (without building), otherwise uncomment it.
 ::call cmake --build . --target install --config Release
@@ -170,7 +170,7 @@ cd ../
 ```
 
 
-#### Build with the conan 'create' scripts examples:
+#### Build with the conan 'create' script example:
 This is just the example for the windows!  
 Probably you will need to adjust it for your purposes.
 ##### Windows (.bat) For Visual Studio 2017 x64
@@ -183,6 +183,15 @@ conan create . steptosky/develop ^
      -s build_type=Release ^
      -e CONAN_TEST_REPORT_DIR="report/conan-test" ^
      -e CONAN_TEST_LIB=1
+     
+conan create . steptosky/develop ^
+     -s compiler="Visual Studio" ^
+     -s compiler.version=15 ^
+     -s compiler.runtime=MDd ^
+     -s build_type=Debug ^
+     -e CONAN_TEST_REPORT_DIR="report/conan-test" ^
+     -e CONAN_TEST_LIB=1
+
 
 pause
 :: remove build dir

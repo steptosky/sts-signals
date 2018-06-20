@@ -45,10 +45,17 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /**************************************************************************************************/
 
-#if _MSC_VER > 1800 // VS 2013
-#   define NOEXCEPT noexcept
+#ifdef _MSC_VER
+#   if _MSC_VER < 1900 // (VS 2015)
+#       define STS_SIGNALS_NOEXCEPT 
+#       define STS_SIGNALS_MOVESEM(X) 
+#   else
+#       define STS_SIGNALS_NOEXCEPT noexcept
+#       define STS_SIGNALS_MOVESEM(X) X
+#   endif
 #else
-#   define NOEXCEPT
+#   define STS_SIGNALS_NOEXCEPT noexcept
+#   define STS_SIGNALS_MOVESEM(X) X
 #endif
 
 /**************************************************************************************************/

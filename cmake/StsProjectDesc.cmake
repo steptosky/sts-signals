@@ -35,7 +35,7 @@
 # StepToSky project description.
 #
 # Version 1.2.0 (21.04.2017) 
-#	- List of open source libraries
+#   - List of open source libraries
 # Version 1.1.0 (19.03.2017)
 # Version 1.0.0
 #
@@ -44,17 +44,17 @@
 # This file describes the project.
 # Use StsInfoFilesGenerator module for generation c++ .h file.
 #
-#	Usage example:
+#   Usage example:
 #
-#		# specify the folder where this module is.
-#		list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+#       # specify the folder where this module is.
+#       list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 #
-#		# include the modules
-#		include(StsProjectDesk)
-#		include(StsInfoFilesGenerator)
+#       # include the modules
+#       include(StsProjectDesk)
+#       include(StsInfoFilesGenerator)
 #
-#		# generate file
-#		genInfoFile(StsProjectDesk "${CMAKE_SOURCE_DIR}/include/Info.h")
+#       # generate file
+#       genInfoFile(StsProjectDesk "${CMAKE_SOURCE_DIR}/include/Info.h")
 #
 #----------------------------------------------------------------------------------#
 #//////////////////////////////////////////////////////////////////////////////////#
@@ -74,7 +74,7 @@ set(ProjectOrganizationWebLink "www.steptosky.com")
 
 set(ProjectName "signals-slots library")
 set(ProjectShortName "sts-signals")
-set(ProjectDescription "Cross-platform C++ Library for working with the signals-slots pattern.")
+set(ProjectDescription "Cross-platform headers only C++ Library for working with signals-slots pattern.")
 set(ProjectWebLink "www.steptosky.com")
 set(ProjectSourcesWebLink "https://github.com/steptosky/sts-signals")
 
@@ -83,7 +83,7 @@ set(ProjectSourcesWebLink "https://github.com/steptosky/sts-signals")
 
 set(ProjectVersionMajor 0)
 set(ProjectVersionMinor 1)
-set(ProjectVersionPatch 0)
+set(ProjectVersionPatch 1)
 set(ProjectVersion "${ProjectVersionMajor}.${ProjectVersionMinor}.${ProjectVersionPatch}")
 set(ProjectReleaseType "alpha") # You can use any string you wish
 

@@ -202,7 +202,7 @@ namespace signals {
             : mCall(r.mCall ? r.mCall->clone() : nullptr),
               mDisconnectObj(r.mDisconnectObj) { }
 
-        SafeDelegate(SafeDelegate && r) NOEXCEPT
+        SafeDelegate(SafeDelegate && r) STS_SIGNALS_NOEXCEPT
             : mCall(r.mCall.release()),
               mDisconnectObj(r.mDisconnectObj) {
 
@@ -218,7 +218,7 @@ namespace signals {
             return *this;
         }
 
-        SafeDelegate & operator=(SafeDelegate && r) NOEXCEPT {
+        SafeDelegate & operator=(SafeDelegate && r) STS_SIGNALS_NOEXCEPT {
             mCall.reset(r.mCall.release());
             mDisconnectObj = r.mDisconnectObj;
             r.mDisconnectObj = nullptr;
