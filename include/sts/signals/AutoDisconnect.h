@@ -30,6 +30,7 @@
 */
 
 #include <vector>
+#include "Defines.h"
 #include "Connection.h"
 
 namespace sts {
@@ -52,10 +53,8 @@ namespace signals {
         AutoDisconnect(const AutoDisconnect &) = default;
         AutoDisconnect & operator=(const AutoDisconnect &) = default;
 
-#if _MSC_VER > 1800 // (2013)
-        AutoDisconnect(AutoDisconnect &&) = default;
-        AutoDisconnect & operator=(AutoDisconnect &&) = default;
-#endif
+        STS_SIGNALS_MOVESEM(AutoDisconnect(AutoDisconnect &&) = default;)
+        STS_SIGNALS_MOVESEM(AutoDisconnect & operator=(AutoDisconnect &&) = default;)
 
         virtual ~AutoDisconnect() {
             for (auto & d : mSignalDelegates) {

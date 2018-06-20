@@ -99,7 +99,7 @@ namespace signals {
      *       \li Unsafe version of delegate has hacks with types that allow you to store slots without allocating resources on heap.\n
      *           It is also able to call slots almost directly and the call can even be inlined.\n
      * \code
-     *       // Simple, not very accurate benchmarks. (01.06.2018)
+     *       // Simple, not very accurate benchmarks in VS 2017. (01.06.2018)
      *       // This tests show you differences between safe and unsafe delegates,
      *       // so it doesn't matter what PC was used for them.
      *       |---------------------------|-------------|-------------|
@@ -145,10 +145,8 @@ namespace signals {
         Signal & operator=(const Signal &) = default;
         ~Signal() { removeAll(); }
 
-#if _MSC_VER > 1800 // (2013)
-        Signal(Signal &&) = default;
-        Signal & operator=(Signal &&) = default;
-#endif
+        STS_SIGNALS_MOVESEM(Signal(Signal &&) = default;)
+        STS_SIGNALS_MOVESEM(Signal & operator=(Signal &&) = default;)
 
         // @}
         //---------------------------------------------------------------

@@ -84,7 +84,11 @@ namespace signals {
               mB(b) {}
 
         DelegateId(const DelegateId &) = default;
+
         ~DelegateId() = default;
+
+        //-------------------------------------------------------------------------
+
         DelegateId & operator=(const DelegateId &) = default;
 
         //-------------------------------------------------------------------------
