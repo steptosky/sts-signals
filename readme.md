@@ -1,4 +1,4 @@
-# Cross-platform headers only C++ Library for working with the signals-slots pattern.
+# Cross-platform headers only C++ Library for working with signals-slots pattern.
 
 
 | CI        | master | develop | last commit |
