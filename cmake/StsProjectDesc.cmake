@@ -83,7 +83,7 @@ set(ProjectSourcesWebLink "https://github.com/steptosky/sts-signals")
 
 set(ProjectVersionMajor 0)
 set(ProjectVersionMinor 1)
-set(ProjectVersionPatch 1)
+set(ProjectVersionPatch 2)
 set(ProjectVersion "${ProjectVersionMajor}.${ProjectVersionMinor}.${ProjectVersionPatch}")
 set(ProjectReleaseType "alpha") # You can use any string you wish
 

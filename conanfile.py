@@ -43,7 +43,7 @@ vcs_data.load_vcs_data()
 
 
 class LibConan(ConanFile):
-    version = "0.1.1"
+    version = "0.1.2"
     name = 'sts-signals'
     url = 'https://github.com/steptosky/sts-signals'
     license = 'BSD 3-Clause'
