@@ -335,9 +335,15 @@ namespace signals {
         size_t slotsCount() const { return mDelegateList.size(); }
 
         /*!
-         * \return True if there is no slot connected.
+         * \return True if there are some slots connected.
          */
-        size_t isEmpty() const { return slotsCount() == 0; }
+        bool hasConnections() const { return slotsCount() != 0; }
+
+        /*!
+         * \deprecated use \link Signal::hasConnections \endlink
+         * \return True if there are no slots connected.
+         */
+        bool isEmpty() const { return !hasConnections(); }
 
         // @}
         //---------------------------------------------------------------
