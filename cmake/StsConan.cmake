@@ -34,6 +34,9 @@
 #
 # Conan basic setup. 
 #
+# Version 1.1.0
+#    Changed some var names
+#
 # Version 1.0.0
 #
 #----------------------------------------------------------------------------------#
@@ -41,8 +44,8 @@
 #----------------------------------------------------------------------------------#
 # conan.io
 
-if (BUILD_TESTS)
-    set(ENV{CONAN_TEST_LIB} "1")
+if (BUILD_TESTING)
+    set(ENV{CONAN_BUILD_TESTING} "1")
 endif()
 
 set(CONAN_CMAKE_SOURCE "${CMAKE_SOURCE_DIR}/cmake/conan.cmake")

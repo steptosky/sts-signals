@@ -2,7 +2,7 @@
 # //////////////////////////////////////////////////////////////////////////////////#
 # ----------------------------------------------------------------------------------#
 #
-#  Copyright (C) 2017, StepToSky
+#  Copyright (C) 2018, StepToSky
 #  All rights reserved.
 #
 #  Redistribution and use in source and binary forms, with or without
@@ -41,6 +41,7 @@ import os
 class LibReuseConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     generators = "cmake"
+    exec_name = "conan-test-package"
     artifact_name = "sts-signals"
 
     def build(self):
@@ -49,7 +50,7 @@ class LibReuseConan(ConanFile):
         cmake.build()
 
     def test(self):
-        self.run("cd bin && .%smytest" % os.sep)
+        self.run("cd bin && .%s%s" % (os.sep, self.exec_name))
         assert os.path.exists(os.path.join(self.deps_cpp_info[self.artifact_name].rootpath, "licenses", "license.txt"))
 
 # ----------------------------------------------------------------------------------#

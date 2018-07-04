@@ -2,7 +2,7 @@
 #//////////////////////////////////////////////////////////////////////////////////#
 #----------------------------------------------------------------------------------#
 #
-#  Copyright (C) 2017, StepToSky
+#  Copyright (C) 2018, StepToSky
 #  All rights reserved.
 #
 #  Redistribution and use in source and binary forms, with or without
@@ -37,8 +37,8 @@
 
 cmake_minimum_required (VERSION 3.7.0)
 
-set(PROJECT ${ProjectId})
-project(${PROJECT} VERSION ${ProjectVersion} LANGUAGES "CXX")
+set(TARGET ${ProjectId})
+project(${TARGET} VERSION ${ProjectVersion} LANGUAGES "CXX")
 
 #----------------------------------------------------------------------------------#
 #//////////////////////////////////////////////////////////////////////////////////#
@@ -60,67 +60,26 @@ groupFiles("${CM_FILES}")
 #----------------------------------------------------------------------------------#
 # targets
 
-add_library(${PROJECT} INTERFACE)
+add_library(${TARGET} INTERFACE)
 
 #----------------------------------------------------------------------------------#
 # cxx standard 
 
-#set_target_properties(${PROJECT} PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED YES)
-target_compile_features(${PROJECT} INTERFACE cxx_std_11)
+target_compile_features(${TARGET} INTERFACE cxx_std_11)
 
 #----------------------------------------------------------------------------------#
 # linkage 
 
-target_include_directories(${PROJECT} 
+target_include_directories(${TARGET} 
     INTERFACE "$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>"
 )
 
 #----------------------------------------------------------------------------------#
-# compile options
-
-#target_compile_options(${PROJECT} 
-#   PRIVATE "$<$<CXX_COMPILER_ID:MSVC>:/W4>"
-#   PRIVATE "$<$<CXX_COMPILER_ID:MSVC>:/WX>"
-#   
-#   PRIVATE "$<$<CXX_COMPILER_ID:AppleClang>:-Wno-unknown-pragmas>"
-#   PRIVATE "$<$<CXX_COMPILER_ID:AppleClang>:-pedantic>"
-#   PRIVATE  "$<$<CXX_COMPILER_ID:AppleClang>:-Werror>"
-#   
-#   PRIVATE "$<$<CXX_COMPILER_ID:Clang>:-Wno-unknown-pragmas>"
-#   PRIVATE "$<$<CXX_COMPILER_ID:Clang>:-pedantic>"
-#   PRIVATE  "$<$<CXX_COMPILER_ID:Clang>:-Werror>"
-#   
-#   PRIVATE "$<$<CXX_COMPILER_ID:GNU>:-Wno-unknown-pragmas>"
-#   PRIVATE "$<$<CXX_COMPILER_ID:GNU>:-pedantic>"
-#   PRIVATE  "$<$<CXX_COMPILER_ID:GNU>:-Werror>"
-#)
-
+#//////////////////////////////////////////////////////////////////////////////////#
 #----------------------------------------------------------------------------------#
 # installation
 
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/include/" DESTINATION "include") 
-#install(TARGETS ${PROJECT} EXPORT ${PROJECT} DESTINATION "$<CONFIG>")
-#install(EXPORT ${PROJECT} NAMESPACE "${PROJECT}::" 
-#   DESTINATION "cmake" FILE "${PROJECT}Config.cmake"
-#)
-#
-#export(EXPORT ${PROJECT} NAMESPACE "${PROJECT}::" 
-#   FILE "${CMAKE_SOURCE_DIR}/output-dev/${PROJECT}Config.cmake"
-#)
-#export(PACKAGE ${PROJECT})
-
-#----------------------------------------------------------------------------------#
-#//////////////////////////////////////////////////////////////////////////////////#
-#----------------------------------------------------------------------------------#
-# export header file
-
-#include(GenerateExportHeader)
-#generate_export_header(${PROJECT} 
-#   EXPORT_MACRO_NAME "StsSigExport" 
-#   EXPORT_FILE_NAME ${CMAKE_SOURCE_DIR}/include/${ProjectId}/Export.h
-#   DEPRECATED_MACRO_NAME "StsSigDeprecated"
-#   STATIC_DEFINE "STSSIGNALS_STATIC_COMPILATION"
-#)
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/include/" DESTINATION "include")
 
 #----------------------------------------------------------------------------------#
 #//////////////////////////////////////////////////////////////////////////////////#

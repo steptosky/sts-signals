@@ -2,7 +2,7 @@
 # //////////////////////////////////////////////////////////////////////////////////#
 # ----------------------------------------------------------------------------------#
 #
-#  Copyright (C) 2017, StepToSky
+#  Copyright (C) 2018, StepToSky
 #  All rights reserved.
 #
 #  Redistribution and use in source and binary forms, with or without
@@ -43,11 +43,11 @@ vcs_data.load_vcs_data()
 
 
 class LibConan(ConanFile):
-    version = "0.1.1"
+    version = "0.1.2"
     name = 'sts-signals'
     url = 'https://github.com/steptosky/sts-signals'
     license = 'BSD 3-Clause'
-    description = "Cross-platform headers only C++ Library for working with signals-slots pattern."
+    description = "Cross-platform headers only C++ library for working with signals-slots pattern."
     author = 'StepToSky <info@steptosky.com>'
     settings = "os", "compiler", "build_type", "arch"
     default_options = 'gtest:shared=False', 'gtest:build_gmock=True'
@@ -57,29 +57,29 @@ class LibConan(ConanFile):
     no_copy_source = True
     generators = 'cmake'
 
-    build_test_var = "CONAN_TEST_LIB"
-    test_dir_var = "CONAN_TEST_REPORT_DIR"
+    build_test_var = "CONAN_BUILD_TESTING"
+    test_dir_var = "CONAN_TESTING_REPORT_DIR"
 
     def configure(self):
         if self.settings.compiler == "Visual Studio" and float(str(self.settings.compiler.version)) < 12:
             raise Exception("Visual Studio 12 (2013) or higher is required")
 
     def requirements(self):
-        if os.getenv(self.build_test_var, "") == "1":
+        if os.getenv(self.build_test_var, "0") == "1":
             self.requires('gtest/1.8.0@bincrafters/stable', private=True)
 
     def build(self):
-        build_tests = os.getenv(self.build_test_var, "")
+        build_testing = os.getenv(self.build_test_var, "0")
         test_dir = os.getenv(self.test_dir_var, "")
         cmake = CMake(self)
         vcs_data.setup_cmake(cmake)
-        cmake.definitions["BUILD_TESTS"] = 'ON' if build_tests == "1" else 'OFF'
+        cmake.definitions["BUILD_TESTING"] = 'ON' if build_testing == "1" else 'OFF'
         if test_dir:
-            cmake.definitions["TEST_REPORT_DIR"] = test_dir
+            cmake.definitions["TESTING_REPORT_DIR"] = test_dir
         cmake.configure()
         cmake.build()
         cmake.install()
-        if build_tests == "1":
+        if build_testing == "1":
             cmake.test()
 
     def package(self):

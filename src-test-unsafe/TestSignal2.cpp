@@ -123,7 +123,7 @@ AppReceiver AppStaticReceiver2::appReceiver;
 
 TEST(Signals2, call_empty) {
     TestSignal sender;
-    ASSERT_TRUE(sender.isEmpty());
+    ASSERT_FALSE(sender.hasConnections());
     sender("Empty test", 0, 0);
 }
 
@@ -137,8 +137,8 @@ TEST(Signals2, connectiing_disconecting) {
     AppReceiver receiver1;
     AppReceiver receiver2;
 
-    ASSERT_TRUE(sender1.isEmpty());
-    ASSERT_TRUE(sender2.isEmpty());
+    ASSERT_FALSE(sender1.hasConnections());
+    ASSERT_FALSE(sender2.hasConnections());
     sender1.connect(&AppStaticReceiver1::testStaticDelegate);
     sender2.connect(&AppStaticReceiver1::testStaticDelegate);
     ASSERT_EQ(1, sender1.slotsCount());
@@ -173,8 +173,8 @@ TEST(Signals2, connectiing_disconecting) {
     ASSERT_EQ(0, sender1.slotsCount());
     ASSERT_EQ(0, sender2.slotsCount());
 
-    ASSERT_TRUE(sender1.isEmpty());
-    ASSERT_TRUE(sender2.isEmpty());
+    ASSERT_FALSE(sender1.hasConnections());
+    ASSERT_FALSE(sender2.hasConnections());
 }
 
 TEST(Signals2, connectiing_disconect_all_of_object) {
@@ -182,7 +182,7 @@ TEST(Signals2, connectiing_disconect_all_of_object) {
     AppReceiver receiver1;
     AppReceiver receiver2;
 
-    ASSERT_TRUE(sender.isEmpty());
+    ASSERT_FALSE(sender.hasConnections());
     sender.connect(&receiver1, &AppReceiver::testMethodDelegate);
     sender.connect(&receiver1, &AppReceiver::testMethodDelegate2);
     ASSERT_EQ(2, sender.slotsCount());
@@ -201,7 +201,7 @@ TEST(Signals2, connectiing_disconect_all) {
     AppReceiver receiver1;
     AppReceiver receiver2;
 
-    ASSERT_TRUE(sender.isEmpty());
+    ASSERT_FALSE(sender.hasConnections());
     sender.connect(&AppStaticReceiver1::testStaticDelegate);
     ASSERT_EQ(1, sender.slotsCount());
     sender.connect(&AppStaticReceiver2::testStaticDelegate);

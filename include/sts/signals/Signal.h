@@ -182,7 +182,7 @@ namespace signals {
             if (mInvoke) {
                 throw std::runtime_error("You can't disconnect static slot during the signal invocation.");
             }
-            removeDelegte(DelegateType::make(function));
+            removeDelegate(DelegateType::make(function));
         }
 
         // @}
@@ -274,7 +274,7 @@ namespace signals {
             if (mInvoke) {
                 throw std::runtime_error("You can't disconnect slot during the signal invocation.");
             }
-            removeDelegte(DelegateType::make(obj, method));
+            removeDelegate(DelegateType::make(obj, method));
         }
 
         /*!
@@ -335,9 +335,15 @@ namespace signals {
         size_t slotsCount() const { return mDelegateList.size(); }
 
         /*!
-         * \return True if there is no slot connected.
+         * \return True if there are some slots connected.
          */
-        size_t isEmpty() const { return slotsCount() == 0; }
+        bool hasConnections() const { return slotsCount() != 0; }
+
+        /*!
+         * \deprecated use \link Signal::hasConnections \endlink
+         * \return True if there are no slots connected.
+         */
+        bool isEmpty() const { return !hasConnections(); }
 
         // @}
         //---------------------------------------------------------------
@@ -368,7 +374,7 @@ namespace signals {
             }
         }
 
-        void removeDelegte(const DelegateType & d) {
+        void removeDelegate(const DelegateType & d) {
             auto it = std::find_if(mDelegateList.begin(), mDelegateList.end(), [&](const DelegateType & v) {
                 return d == v;
             });
