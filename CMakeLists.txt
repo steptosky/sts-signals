@@ -39,18 +39,18 @@ cmake_minimum_required (VERSION 3.7.0)
 
 message(STATUS "==============================================")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
- 
+
 #----------------------------------------------------------------------------------#
 #//////////////////////////////////////////////////////////////////////////////////#
 #----------------------------------------------------------------------------------#
 # Solution
 
-project("sts-signals" LANGUAGES "CXX")
+include(StsProjectDesc)
+project(${ProjectId} LANGUAGES "CXX")
 
 #----------------------------------------------------------------------------------#
 # Info file
 
-include(StsProjectDesc)
 include(StsInfoFilesGenerator)
 genInfoFile(StsProjectDesc "${CMAKE_SOURCE_DIR}/include/sts/signals/Info.h")
 
@@ -59,15 +59,17 @@ genInfoFile(StsProjectDesc "${CMAKE_SOURCE_DIR}/include/sts/signals/Info.h")
 #----------------------------------------------------------------------------------#
 # options 
 
-if (NOT TEST_REPORT_DIR)
-    set(TEST_REPORT_DIR ${CMAKE_SOURCE_DIR}/reports/tests)
+if (NOT TESTING_REPORT_DIR)
+    set(TESTING_REPORT_DIR "${CMAKE_SOURCE_DIR}/reports/tests")
 endif()
 
 if (NOT BUILD_SHARED_LIBS)
     set (BUILD_SHARED_LIBS OFF)
 endif()
 
-option(BUILD_TESTS "Build all of it's own tests." OFF) 
+if (NOT BUILD_TESTING)
+    set (BUILD_TESTING OFF)
+endif()
 
 message(STATUS "==============================================")
 if (NOT CMAKE_BUILD_TYPE)
@@ -75,9 +77,9 @@ if (NOT CMAKE_BUILD_TYPE)
 else()
     message(STATUS "Build type = ${CMAKE_BUILD_TYPE}")
 endif()
-message(STATUS "Build tests = ${BUILD_TESTS}")
+message(STATUS "Build testing = ${BUILD_TESTING}")
 message(STATUS "Shared lib = ${BUILD_SHARED_LIBS}")
-message(STATUS "Test report dir = ${TEST_REPORT_DIR}")
+message(STATUS "Testing report dir = ${TESTING_REPORT_DIR}")
 message(STATUS "Installation prefix = ${CMAKE_INSTALL_PREFIX}")
 message(STATUS "==============================================")
 
@@ -93,24 +95,11 @@ conan_cmake_run(CONANFILE conanfile.py
 
 #----------------------------------------------------------------------------------#
 #//////////////////////////////////////////////////////////////////////////////////#
-#----------------------------------------------------------------------------------#		
-# help targets
-
-add_custom_target("Clean-Install-Dir"
-    COMMAND cmake -E remove_directory ${CMAKE_INSTALL_PREFIX}
-)
-
-add_custom_target("Clean-Tests-Report"
-    COMMAND cmake -E remove_directory ${TEST_REPORT_DIR}
-)
-
-#----------------------------------------------------------------------------------#
-#//////////////////////////////////////////////////////////////////////////////////#
 #----------------------------------------------------------------------------------#
 # sub projects
 
 add_subdirectory(src)
-if(BUILD_TESTS)
+if(BUILD_TESTING)
     enable_testing()
     add_subdirectory(src-test-unsafe)
     add_subdirectory(src-test-safe)
@@ -126,7 +115,7 @@ set(LIB_CONFIG_VER "${CMAKE_CURRENT_BINARY_DIR}/${ProjectId}ConfigVersion.cmake"
 # COMPATIBILITY (AnyNewerVersion|SameMajorVersion|ExactVersion)
 write_basic_package_version_file(
     ${LIB_CONFIG_VER}
-    VERSION ${ProjectVersion} 
+    VERSION ${ProjectVersion}
     COMPATIBILITY SameMajorVersion
 )
 
