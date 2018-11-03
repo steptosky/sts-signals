@@ -95,7 +95,7 @@ target_compile_options(${TARGET}
 
 add_test(NAME ${TARGET} 
     COMMAND $<TARGET_FILE:${TARGET}>  
-    "--gtest_output=xml:${TEST_REPORT_DIR}/${PROJECT}.xml"
+    "--gtest_output=xml:${TEST_REPORT_DIR}/${TARGET}.xml"
 )
 
 #----------------------------------------------------------------------------------#
