@@ -48,9 +48,9 @@ public:
     SimpleTimer & now();
 
     Val toSeconds();
-    Val toMilliSeconds();
+    Val toMilliseconds();
     Val toMicroSeconds();
-    Val toNanoSeconds();
+    Val toNanoseconds();
 
     //-------------------------------------------------------------------------
 
@@ -88,7 +88,7 @@ Val SimpleTimer<Val>::toSeconds() {
 }
 
 template<typename Val>
-Val SimpleTimer<Val>::toMilliSeconds() {
+Val SimpleTimer<Val>::toMilliseconds() {
     return std::chrono::duration_cast<std::chrono::duration<Val, std::milli>>(mEnd - mStart).count();
 }
 
@@ -98,7 +98,7 @@ Val SimpleTimer<Val>::toMicroSeconds() {
 }
 
 template<typename Val>
-Val SimpleTimer<Val>::toNanoSeconds() {
+Val SimpleTimer<Val>::toNanoseconds() {
     return std::chrono::duration_cast<std::chrono::duration<Val, std::nano>>(mEnd - mStart).count();
 }
 

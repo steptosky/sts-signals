@@ -83,19 +83,19 @@ inline void safeBenchmark() {
     for (auto & v : r) {
         sig.connect(&v, &SimpleReceiver::slot);
     }
-    auto tVal = timer.now().toMilliSeconds();
+    auto tVal = timer.now().toMilliseconds();
     std::cout << " Connecting:    " << tVal << " ms" << std::endl;
     //-------------------------------------------------------------------------
     timer.start();
     sig(10, 20);
-    tVal = timer.now().toMilliSeconds();
+    tVal = timer.now().toMilliseconds();
     std::cout << " Calling        " << tVal << " ms" << std::endl;
     //-------------------------------------------------------------------------
     timer.start();
     for (auto & v : r) {
         sig.disconnect(&v, &SimpleReceiver::slot);
     }
-    tVal = timer.now().toMilliSeconds();
+    tVal = timer.now().toMilliseconds();
     std::cout << " Disconnecting: " << tVal << " ms" << std::endl;
     //-------------------------------------------------------------------------
     std::cout << " ========================================" << std::endl;

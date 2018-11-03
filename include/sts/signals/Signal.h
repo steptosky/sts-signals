@@ -74,7 +74,7 @@ namespace signals {
      * senderObj.mSignal(true, 5);
      * 
      * // Disconnecting slots from the signal
-     * sender.mSignal.disconnect(&Receiver::slotStaticFunctiond);      // static function
+     * sender.mSignal.disconnect(&Receiver::slotStaticFunction);      // static function
      * sender.mSignal.disconnect(&receiverObj, &Receiver::slotMethod); // class method
      * // or
      * sender.mSignal.disconnect(&receiverObj);                        // all class methods of given pointer
@@ -255,7 +255,7 @@ namespace signals {
             if (!std::any_of(mDelegateList.begin(), mDelegateList.end(), [&](const DelegateType & v) { return d == v; })) {
                 d.setAutoDisconnectObj(disconnectObj);
                 auto connection = autoDisconnectDelegate(d);
-                Connection::addToAutoDisconnecter(std::move(connection), disconnectObj);
+                Connection::addToAutoDisconnector(std::move(connection), disconnectObj);
                 mDelegateList.emplace_back(std::move(d));
             }
         }
@@ -300,7 +300,7 @@ namespace signals {
 
         /*!
          * \details Disconnects slot by its connection. 
-         *          It is called from auto-disconnecter.
+         *          It is called from auto-disconnector.
          * \param [in] connection
          * \exception std::runtime_error if this method is called during the signal invocation.
          */
@@ -363,14 +363,14 @@ namespace signals {
     private:
 
         Connection autoDisconnectDelegate(DelegateType & d) {
-            return Connection(d.id(), Connection::DisconnectDeligate::make(this, &Signal::disconnectByConnection));
+            return Connection(d.id(), Connection::DisconnectDelegate::make(this, &Signal::disconnectByConnection));
         }
 
-        void removeFromAutoDisconnecter(DelegateType & d) {
+        void removeFromAutoDisconnector(DelegateType & d) {
             auto * disconnectObg = d.autoDisconnectObj();
             if (disconnectObg) {
                 auto connection = autoDisconnectDelegate(d);
-                Connection::removeFromAutoDisconnecter(connection, disconnectObg);
+                Connection::removeFromAutoDisconnector(connection, disconnectObg);
             }
         }
 
@@ -379,7 +379,7 @@ namespace signals {
                 return d == v;
             });
             if (it != mDelegateList.end()) {
-                removeFromAutoDisconnecter(*it);
+                removeFromAutoDisconnector(*it);
                 mDelegateList.erase(it);
             }
         }
@@ -389,7 +389,7 @@ namespace signals {
             assert(obj);
             for (auto it = mDelegateList.begin(); it != mDelegateList.end();) {
                 if (it->id().mA == DelegateId::ptrToId<T>(obj)) {
-                    removeFromAutoDisconnecter(*it);
+                    removeFromAutoDisconnector(*it);
                     it = mDelegateList.erase(it);
                     if (it == mDelegateList.end()) {
                         break;
@@ -403,7 +403,7 @@ namespace signals {
 
         void removeAll() {
             for (auto & d : mDelegateList) {
-                removeFromAutoDisconnecter(d);
+                removeFromAutoDisconnector(d);
             }
             mDelegateList.clear();
         }

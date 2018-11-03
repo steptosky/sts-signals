@@ -49,33 +49,33 @@ namespace signals {
     public:
 
         typedef std::vector<Connection> List;
-        typedef Delegate<const Connection&> DisconnectDeligate;
+        typedef Delegate<const Connection&> DisconnectDelegate;
 
         //---------------------------------------------------------------
 
         Connection() = default;
 
         /*!
-         * \details Create with delegate id and delegate for disconnecting.
-         * \param      [in] id of delegate which is in the signal list. 
-         *                  For example: because of this id the connection knows
-         *                  what the delegate work with.
+         * \details Create with delegate id.
+         * \param [in] id of delegate which is in the signal list. 
+         *             For example: because of this id the connection knows
+         *             what the delegate work with.
          */
         explicit Connection(const DelegateId id)
             : mId(id) {}
 
         /*!
          * \details Create with delegate id and delegate for disconnecting.
-         * \param      [in] id of delegate which is in the signal list.
-         *                  For example: because of this id the connection knows
-         *                  what the delegate work with.
+         * \param [in] id of delegate which is in the signal list.
+         *             For example: because of this id the connection knows
+         *             what the delegate work with.
          * \param [in, out] disconnect delegate which is used for disconnecting.
          *                  When you call \link disconnect \endlink
          *                  actually it will call this delegate.
          */
-        explicit Connection(const DelegateId id, DisconnectDeligate && disconnect)
+        explicit Connection(const DelegateId id, DisconnectDelegate && disconnect)
             : mId(id),
-              mDisconnectDeligate(std::move(disconnect)) {}
+              mDisconnectDelegate(std::move(disconnect)) {}
 
         //---------------------------------------------------------------
 
@@ -89,7 +89,7 @@ namespace signals {
         //---------------------------------------------------------------
 
         bool operator==(const Connection & d) const {
-            return mId == d.mId && mDisconnectDeligate == d.mDisconnectDeligate;
+            return mId == d.mId && mDisconnectDelegate == d.mDisconnectDelegate;
         }
 
         //---------------------------------------------------------------
@@ -99,8 +99,8 @@ namespace signals {
          */
         void disconnect() {
             if (isValid()) {
-                if (mDisconnectDeligate.isValid()) {
-                    mDisconnectDeligate(*this);
+                if (mDisconnectDelegate.isValid()) {
+                    mDisconnectDelegate(*this);
                 }
             }
         }
@@ -109,16 +109,16 @@ namespace signals {
 
         /*!
          * \details Adds copy of this connection to the list of 
-         *          connections in the auto-disconnecter.
-         * \details This method works with the auto-disconnecter class.
+         *          connections in the auto-disconnector.
+         * \details This method works with the auto-disconnector class.
          * \note For internal use only.
-         * \tparam T auto-disconnecter
+         * \tparam T auto-disconnector
          * \param [in, out] connection
-         * \param [in, out] p pointer to auto-disconnecter class.
+         * \param [in, out] p pointer to auto-disconnector class.
          * \todo check ii template can be changed to real class.
          */
         template<typename T>
-        static void addToAutoDisconnecter(Connection && connection, T * p) {
+        static void addToAutoDisconnector(Connection && connection, T * p) {
             if (connection.isValid()) {
                 setConnectionToList(std::move(connection), p->mSignalDelegates);
             }
@@ -126,16 +126,16 @@ namespace signals {
 
         /*!
          * \details Removes connection as this one from the list of
-         *          connections in the auto-disconnecter.
-         * \details This method works with the auto-disconnecter class.
+         *          connections in the auto-disconnector.
+         * \details This method works with the auto-disconnector class.
          * \note For internal use only.
-         * \tparam T auto-disconnecter
+         * \tparam T auto-disconnector
          * \param [in] connection
-         * \param [in, out] p pointer to auto-disconnecter class.
+         * \param [in, out] p pointer to auto-disconnector class.
          * \todo check ii template can be changed to real class.
          */
         template<typename T>
-        static void removeFromAutoDisconnecter(const Connection & connection, T * p) {
+        static void removeFromAutoDisconnector(const Connection & connection, T * p) {
             if (connection.isValid()) {
                 removeConnectionFromList(connection, p->mSignalDelegates);
             }
@@ -157,7 +157,7 @@ namespace signals {
         }
 
         DelegateId mId;
-        DisconnectDeligate mDisconnectDeligate;
+        DisconnectDelegate mDisconnectDelegate;
     };
 
     /**************************************************************************************************/

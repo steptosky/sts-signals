@@ -39,16 +39,16 @@ using namespace sts::signals;
 
 TEST(data, sizes) {
     std::cout << "=========================================" << std::endl;
-    std::cout << "DelegateId " << sizeof(sts::signals::DelegateId) << std::endl;
+    std::cout << "DelegateId " << sizeof(DelegateId) << std::endl;
     std::cout << "std::function " << sizeof(std::function<void(int, int)>) << std::endl;
-    std::cout << "UnsafeDelegate " << sizeof(sts::signals::UnsafeDelegate<int, int>) << std::endl;
-    std::cout << "SafeDelegate " << sizeof(sts::signals::SafeDelegate<int, int>) << std::endl;
-    std::cout << "SafeMethodDelegate " << sizeof(sts::signals::SafeMethodDelegate<std::vector<std::string>, int, int>) << std::endl;
-    std::cout << "SafeStaticDelegate " << sizeof(sts::signals::SafeStaticDelegate<int, int>) << std::endl;
-    std::cout << "ISafeDelegate " << sizeof(sts::signals::ISafeDelegate<int, int>) << std::endl;
-    std::cout << "Connection " << sizeof(sts::signals::Connection) << std::endl;
-    std::cout << "Signal " << sizeof(sts::signals::Signal<int, int>) << std::endl;
-    std::cout << "AutoDisconnect " << sizeof(sts::signals::AutoDisconnect) << std::endl;
+    std::cout << "UnsafeDelegate " << sizeof(UnsafeDelegate<int, int>) << std::endl;
+    std::cout << "SafeDelegate " << sizeof(SafeDelegate<int, int>) << std::endl;
+    std::cout << "SafeMethodDelegate " << sizeof(SafeMethodDelegate<std::vector<std::string>, int, int>) << std::endl;
+    std::cout << "SafeStaticDelegate " << sizeof(SafeStaticDelegate<int, int>) << std::endl;
+    std::cout << "ISafeDelegate " << sizeof(ISafeDelegate<int, int>) << std::endl;
+    std::cout << "Connection " << sizeof(Connection) << std::endl;
+    std::cout << "Signal " << sizeof(Signal<int, int>) << std::endl;
+    std::cout << "AutoDisconnect " << sizeof(AutoDisconnect) << std::endl;
     std::cout << "=========================================" << std::endl;
 }
 

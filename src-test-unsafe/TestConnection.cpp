@@ -43,15 +43,15 @@ typedef sts::signals::Delegate<const size_t, const size_t> Delegate;
 /**************************************************************************************************/
 
 TEST(Connection, make_invalid) {
-    const auto deligate = Connection();
-    ASSERT_FALSE(deligate.isValid());
+    const auto delegate = Connection();
+    ASSERT_FALSE(delegate.isValid());
 }
 
 TEST(Connection, check_id) {
     Receiver r;
-    const auto deligate = Delegate::make(&r, &Receiver::slot);
-    const auto connection = Connection(deligate.id());
-    ASSERT_EQ(deligate.id(), connection.delegateId());
+    const auto delegate = Delegate::make(&r, &Receiver::slot);
+    const auto connection = Connection(delegate.id());
+    ASSERT_EQ(delegate.id(), connection.delegateId());
 }
 
 TEST(Connection, equlity) {
@@ -75,7 +75,7 @@ TEST(Connection, disconnect_case1) {
     Disc d;
     Receiver r1;
     auto conn = Connection(Delegate::make(&Receiver::staticSlot1).id(),
-                           Connection::DisconnectDeligate::make(&d, &Disc::disconnectByConnection));
+                           Connection::DisconnectDelegate::make(&d, &Disc::disconnectByConnection));
     conn.disconnect();
     ASSERT_TRUE(d.mCalled);
 }
@@ -91,7 +91,7 @@ TEST(Connection, disconnect_case2) {
     Disc d;
     Receiver r1;
     auto conn = Connection(Delegate::make(&r1, &Receiver::slot).id(),
-                           Connection::DisconnectDeligate::make(&d, &Disc::disconnectByConnection));
+                           Connection::DisconnectDelegate::make(&d, &Disc::disconnectByConnection));
     conn.disconnect();
     ASSERT_TRUE(d.mCalled);
 }

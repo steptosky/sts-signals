@@ -43,8 +43,8 @@ namespace signals {
     /*!
      * \details Inherit from this class when you want to auto-disconnect
      *          the slots while your class is being deleted.
-     * \note I recommend you to use this class only if you really need it.
-     * \test implement correct copy and move logic and test it.
+     * \note It is recommended to use this class only if you really need it, 
+     *       otherwise just use disconnect methods in the signal.
      */
     class AutoDisconnect {
     public:
